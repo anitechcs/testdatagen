@@ -1,0 +1,44 @@
+@import url(../runo/styles.css);
+
+/* Application background */
+/*.v-app {
+  background: rgb(250, 153, 51);
+}*/
+.tData .top {
+	background: url(images/headerbg.jpg) repeat-x;
+}
+.tData .tabSheet{
+	position:absolute;
+	top:65px;
+}
+
+.tData .reload {
+	padding: 45px 20px 0px 0px;
+}
+
+.tData .generate {
+	padding: 10px 10px 10px 0px;
+}
+
+.tData .dataTable{
+	overflow-x: hidden;
+	overflow-y: auto;  
+}
+
+.tData .sqlPanel {
+	position:absolute;
+	right:20px;
+	background-color: threedface;
+}
+
+/*Used only for IE*/
+.tData .sqlPanelIE {
+	position:fixed;
+	right:40px;
+	background-color: threedface;
+}
+
+/*Disable TextArea resizable*/
+.noResizeTextArea {
+	resize: none;
+}
