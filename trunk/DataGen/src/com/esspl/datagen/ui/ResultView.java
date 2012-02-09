@@ -16,7 +16,6 @@ import com.esspl.datagen.DataGenApplication;
 import com.esspl.datagen.GeneratorBean;
 import com.esspl.datagen.generator.Generator;
 import com.esspl.datagen.generator.impl.CsvDataGenerator;
-import com.esspl.datagen.generator.impl.ExcelDataGenerator;
 import com.esspl.datagen.generator.impl.SqlDataGenerator;
 import com.esspl.datagen.generator.impl.XmlDataGenerator;
 import com.esspl.datagen.util.DataGenConstant;
@@ -58,12 +57,16 @@ public class ResultView extends Window {
         Generator genrator = null;
         if(dataOption.equalsIgnoreCase("xml")){
         	genrator = new XmlDataGenerator();
-        }else if(dataOption.equalsIgnoreCase("excel")){
-        	genrator = new ExcelDataGenerator();
+        }else if(dataOption.equalsIgnoreCase("sql")){
+        	genrator = new SqlDataGenerator();
         }else if(dataOption.equalsIgnoreCase("csv")){
         	genrator = new CsvDataGenerator();
-        }else{
-        	genrator = new SqlDataGenerator();//Default command is Sql
+        }
+        
+        if(genrator == null){
+        	log.info("ResultView - genrator object is null");
+        	dataGenApplication.getMainWindow().removeWindow(this);
+        	return;
         }
 		 
         //Data generated from respective command class and shown in the modal window
@@ -107,17 +110,13 @@ public class ResultView extends Window {
 						out.write(message.getValue().toString());
 						out.close();
 						resource = new DataGenExportUtility(dataGenApplication, "data.xml", "text/xml", tempFile);
-			        }else if(dataOption.equalsIgnoreCase("excel")){
-			        	File tempFile = File.createTempFile("tmp", ".xls");
-						//Create contents here, using POI, and write to tempFile
-						resource = new DataGenExportUtility(dataGenApplication, "data.xls", "application/vnd.ms-excel", tempFile);
 			        }else if(dataOption.equalsIgnoreCase("csv")){
 			        	File tempFile = File.createTempFile("tmp", ".csv");
 						BufferedWriter out = new BufferedWriter(new FileWriter(tempFile));
 						out.write(message.getValue().toString());
 						out.close();
 						resource = new DataGenExportUtility(dataGenApplication, "data.csv", "text/csv", tempFile);
-			        }else{
+			        }else if(dataOption.equalsIgnoreCase("sql")){
 			        	File tempFile = File.createTempFile("tmp", ".sql");
 						BufferedWriter out = new BufferedWriter(new FileWriter(tempFile));
 						out.write(message.getValue().toString());
@@ -125,10 +124,13 @@ public class ResultView extends Window {
 						resource = new DataGenExportUtility(dataGenApplication, "data.sql", "text/plain", tempFile);
 			        }
 					getWindow().open(resource, "_self");
-				} catch (FileNotFoundException e) {
+				}catch(FileNotFoundException e) {
 					log.info("ResultView - Export to File Error - "+e.getMessage());
 					e.printStackTrace();
-				} catch (IOException e) {
+				}catch(IOException e) {
+					log.info("ResultView - Export to File Error - "+e.getMessage());
+					e.printStackTrace();
+				}catch(Exception e) {
 					log.info("ResultView - Export to File Error - "+e.getMessage());
 					e.printStackTrace();
 				}

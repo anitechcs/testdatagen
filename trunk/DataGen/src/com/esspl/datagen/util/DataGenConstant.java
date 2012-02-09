@@ -30,7 +30,7 @@ public class DataGenConstant {
 	
 	//Logo
 	public static final ThemeResource LOGO = new ThemeResource("images/logo.jpg");
-	public static final ThemeResource RELOAD = new ThemeResource("images/reload.gif");
+	public static final ThemeResource RESET = new ThemeResource("images/red-cross.gif");
 	public static final ThemeResource ADD = new ThemeResource("images/add.png");
 	public static final ThemeResource VIEW = new ThemeResource("images/view.gif");
 	public static final ThemeResource CLOSE_ICON = new ThemeResource("images/cross.png");

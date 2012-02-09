@@ -7,6 +7,8 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 
+import com.esspl.datagen.generator.Generator;
+import com.esspl.datagen.generator.impl.ExcelDataGenerator;
 import com.esspl.datagen.ui.ExecutorLayout;
 import com.esspl.datagen.ui.ResultView;
 import com.esspl.datagen.util.DataGenConstant;
@@ -116,15 +118,15 @@ public class DataGenApplication extends Application implements ValueChangeListen
         header.setSpacing(false);
         
         //Reload button
-        Button reload = new Button("Reload", new ClickListener() {
+        Button reset = new Button("Reset", new ClickListener() {
             public void buttonClick(ClickEvent event) {
             	getMainWindow().getApplication().close();
             }
         });
-        reload.setIcon(DataGenConstant.RELOAD);
-        reload.setStyleName("reload");
-        top.addComponent(reload);
-        top.setComponentAlignment(reload, Alignment.TOP_RIGHT);
+        reset.setIcon(DataGenConstant.RESET);
+        reset.setStyleName("reload");
+        top.addComponent(reset);
+        top.setComponentAlignment(reset, Alignment.TOP_RIGHT);
 
         listing = new Table();
         listing.setHeight("240px");
@@ -193,6 +195,7 @@ public class DataGenApplication extends Application implements ValueChangeListen
         database.addItem("Postgress Sql");
         database.select("Oracle");
         database.setWidth("160px");
+        database.setNullSelectionAllowed(false);
         HorizontalLayout dbBar = new HorizontalLayout();
         dbBar.setMargin(false, false, false, false);
         dbBar.setSpacing(true);
@@ -203,6 +206,7 @@ public class DataGenApplication extends Application implements ValueChangeListen
         Label tblLabel = new Label("Table Name");
         tblName = new TextField();
         tblName.setWidth("145px");
+        tblName.setStyleName("mandatory");
         HorizontalLayout tableBar = new HorizontalLayout();
         tableBar.setMargin(true, false, false, false);
         tableBar.setSpacing(true);
@@ -255,6 +259,7 @@ public class DataGenApplication extends Application implements ValueChangeListen
         Label lb4 = new Label("Root node name");
         rootNode = new TextField();
         rootNode.setWidth("125px");
+        rootNode.setStyleName("mandatory");
         HorizontalLayout nodeBar = new HorizontalLayout();
         nodeBar.setMargin(true, false, false, false);
         nodeBar.setSpacing(true);
@@ -265,6 +270,7 @@ public class DataGenApplication extends Application implements ValueChangeListen
         Label lb5 = new Label("Record node name");
         recordNode = new TextField();
         recordNode.setWidth("112px");
+        recordNode.setStyleName("mandatory");
         HorizontalLayout recordBar = new HorizontalLayout();
         recordBar.setMargin(true, false, false, false);
         recordBar.setSpacing(true);
@@ -280,6 +286,7 @@ public class DataGenApplication extends Application implements ValueChangeListen
         resultNum = new TextField();
         resultNum.setNullRepresentation("");
         resultNum.setNullSettingAllowed(false);
+        resultNum.setStyleName("mandatory");
         resultNum.addValidator(new IntegerValidator("Number of Results must be an Integer"));
         resultNum.setWidth("5em");
         resultNum.setMaxLength(5);
@@ -354,6 +361,10 @@ public class DataGenApplication extends Application implements ValueChangeListen
         log.debug("DataGenApplication - buildMainLayout() end");
     }
 
+    /*
+     * This method is called when user click on Generate button.
+     * 
+     */
     public void generateButtonClick (Button.ClickEvent event) {
     	log.debug("DataGenApplication - generateButtonClick() start");
     	if(resultNum.getValue() == null || resultNum.getValue().toString().equals("")){
@@ -411,6 +422,14 @@ public class DataGenApplication extends Application implements ValueChangeListen
         	return;
         }
         
+        //If EXCEL option is selected then no need to open Dialog box. Directly build the Excel sheet by using JExcel Api
+        if(dataOption.equalsIgnoreCase("excel")){
+        	log.debug("DataGenApplication - generateButtonClick() - Generating Excel Sheet");
+        	Generator genrator = new ExcelDataGenerator();
+        	genrator.generate(this, rowList);
+        	return;
+        }
+        
     	// Create the result window...
         resultWindow = new ResultView(this, rowList);
         resultWindow.setModal(true);
@@ -420,6 +439,10 @@ public class DataGenApplication extends Application implements ValueChangeListen
         log.debug("DataGenApplication - generateButtonClick() end");
     }
 
+    /*
+     * This method is called when user click on AddRows button.
+     * 
+     */
     public void addRowButtonClick(ClickEvent event) {
     	log.debug("DataGenApplication - addRowButtonClick() start");
     	if(rowNum.getValue() == null || rowNum.getValue().toString().equals("")){
@@ -471,6 +494,10 @@ public class DataGenApplication extends Application implements ValueChangeListen
         log.debug("DataGenApplication - valueChange() end");
     }
     
+    /*
+     * This method is responsible for adding a row in Generator grid.
+     * 
+     */
     public void addRow(int noOfRow) {
     	log.debug("DataGenApplication - addRow() start");
     	int maxSize = tableLength+noOfRow;
