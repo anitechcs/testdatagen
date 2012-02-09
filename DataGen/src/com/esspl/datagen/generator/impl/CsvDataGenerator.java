@@ -24,7 +24,7 @@ public class CsvDataGenerator implements Generator{
 	
 	private static final Logger log = Logger.getLogger(CsvDataGenerator.class);
 	private StringBuilder sbCSV = new StringBuilder();
-    private String dataDelimeter = "\t";
+    private String dataDelimeter = ", ";
 
     /**
      * Actual data generation logic for CSV present here

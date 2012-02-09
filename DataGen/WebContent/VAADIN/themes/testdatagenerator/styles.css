@@ -42,3 +42,7 @@
 .noResizeTextArea {
 	resize: none;
 }
+
+.tData .mandatory {
+	background: lightpink;
+}
