@@ -341,9 +341,17 @@ public class DataGenApplication extends Application implements ValueChangeListen
         //Help Tab content start
         VerticalLayout help = new VerticalLayout();
         help.setMargin(true);
-        Label helpRichText = new Label(DataGenConstant.HELP_CONTENT);
-        helpRichText.setContentMode(Label.CONTENT_XHTML);
-        help.addComponent(helpRichText);
+        Label helpText = new Label(DataGenConstant.HELP_CONTENT);
+        helpText.setContentMode(Label.CONTENT_XHTML);
+        help.addComponent(helpText);
+        
+        Embedded helpScreen = new Embedded();
+        helpScreen.setSource(DataGenConstant.HELP_SCREEN);
+        help.addComponent(helpScreen);
+        
+        Label helpStepsText = new Label(DataGenConstant.HELP_CONTENT_STEPS);
+        helpStepsText.setContentMode(Label.CONTENT_XHTML);
+        help.addComponent(helpStepsText);
         //Help Tab content end
         
         //Add the respective contents to the tab sheet
@@ -532,6 +540,7 @@ public class DataGenApplication extends Application implements ValueChangeListen
             format.setCaption("Format");
             format.setImmediate(true);
             format.setSizeFull();
+            format.setEnabled(false);
             format.addListener(this);
 
             Label example = new Label("NA");

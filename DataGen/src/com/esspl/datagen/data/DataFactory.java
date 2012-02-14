@@ -604,13 +604,11 @@ public final class DataFactory {
 		if(!text.equals("")){
 			result.append(text);
 		}else{
-			result.append(getRandomChars(2));
+			result.append("");
 		}
 		int numberLength = length - result.length();
 		if(numberLength > 0){
 			result.append(getNumberText(numberLength));
-		}else{
-			result.append(getNumberText(4));
 		}
 		
 		return result.toString();

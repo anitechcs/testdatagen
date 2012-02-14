@@ -16,7 +16,7 @@ import com.vaadin.ui.Select;
 import com.vaadin.ui.TextField;
 
 /**
- * @author tapasj
+ * @author Tapas
  *
  */
 public class SqlDataGenerator implements Generator{
@@ -67,9 +67,9 @@ public class SqlDataGenerator implements Generator{
     	        Item item = dataGenApplication.listing.getItem(iid);
     	        Select selFormat = (Select)(item.getItemProperty("Format").getValue());
         		if(dataType.equalsIgnoreCase("name")){
-        			data = df.getName(selFormat.getValue().toString());
+        			data = "'"+df.getName(selFormat.getValue().toString())+"'";
         		}else if(dataType.equalsIgnoreCase("email")){
-        			data = df.getEmailAddress();
+        			data = "'"+df.getEmailAddress()+"'";
         		}else if(dataType.equalsIgnoreCase("date")){
         			HorizontalLayout hLayout = (HorizontalLayout)(item.getItemProperty("Additional Data").getValue());
         			PopupDateField startDate = (PopupDateField)hLayout.getComponent(0);
@@ -79,26 +79,26 @@ public class SqlDataGenerator implements Generator{
         			String formatedEndDate = (endDate.getValue() == null || endDate.getValue().toString().equals(""))?"":sdf.format(endDate.getValue()).toString();
         			data = df.getDate(selFormat.getValue().toString(), formatedStatDate, formatedEndDate);
         		}else if(dataType.equalsIgnoreCase("city")){
-        			data = df.getCity();
+        			data = "'"+df.getCity()+"'";
         		}else if(dataType.equalsIgnoreCase("state/provience/county")){
-        			data = df.getState(selFormat.getValue().toString());
+        			data = "'"+df.getState(selFormat.getValue().toString())+"'";
         		}else if(dataType.equalsIgnoreCase("postal/zip")){
         			data = df.getZipCode(selFormat.getValue().toString());
         		}else if(dataType.equalsIgnoreCase("street address")){
-        			data = df.getStreetName();
+        			data = "'"+df.getStreetName()+"'";
         		}else if(dataType.equalsIgnoreCase("title")){
-        			data = df.getPrefix();
+        			data = "'"+df.getPrefix()+"'";
         		}else if(dataType.equalsIgnoreCase("phone/fax")){
         			data = df.getPhoneNumber(selFormat.getValue().toString());
         		}else if(dataType.equalsIgnoreCase("country")){
-        			data = df.getCountry();
+        			data = "'"+df.getCountry()+"'";
         		}else if(dataType.equalsIgnoreCase("random text")){
         			HorizontalLayout hLayout = (HorizontalLayout)(item.getItemProperty("Additional Data").getValue());
         			TextField minLengthField = (TextField)hLayout.getComponent(0);
         			TextField maxLengthField = (TextField)hLayout.getComponent(1);
         			int minLength = (minLengthField.getValue() == null || minLengthField.getValue().toString().equals(""))?3:Integer.parseInt(minLengthField.getValue().toString());
         			int maxLength = (maxLengthField.getValue() == null || maxLengthField.getValue().toString().equals(""))?10:Integer.parseInt(maxLengthField.getValue().toString());
-        			data = df.getRandomText(minLength, maxLength);
+        			data = "'"+df.getRandomText(minLength, maxLength)+"'";
         		}else if(dataType.equalsIgnoreCase("incremental number")){
         			data = String.valueOf(row+1);
         		}else if(dataType.equalsIgnoreCase("number range")){
@@ -114,13 +114,13 @@ public class SqlDataGenerator implements Generator{
         			TextField lengthField = (TextField)hLayout.getComponent(1);
         			String startingText = (startingTextField.getValue() == null || startingTextField.getValue().toString().equals(""))?"":startingTextField.getValue().toString();
         			int length = (lengthField.getValue() == null || lengthField.getValue().toString().equals(""))?6:Integer.parseInt(lengthField.getValue().toString());
-        			data = df.getAlphaNumericText(startingText, length);
+        			data = "'"+df.getAlphaNumericText(startingText, length)+"'";
         		}else if(dataType.equalsIgnoreCase("maratial status")){
-        			data = df.getStatus();
+        			data = "'"+df.getStatus()+"'";
         		}else if(dataType.equalsIgnoreCase("department name")){
-        			data = df.getBusinessType();
+        			data = "'"+df.getBusinessType()+"'";
         		}else if(dataType.equalsIgnoreCase("company name")){
-        			data = df.getCompanyName();
+        			data = "'"+df.getCompanyName()+"'";
         		}
         		
         		if(sb.length() > 0) sb.append(", ");
