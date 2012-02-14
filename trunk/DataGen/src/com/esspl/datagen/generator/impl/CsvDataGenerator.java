@@ -17,7 +17,7 @@ import com.vaadin.ui.Select;
 import com.vaadin.ui.TextField;
 
 /**
- * @author tapasj
+ * @author Tapas
  *
  */
 public class CsvDataGenerator implements Generator{

@@ -1,12 +1,9 @@
 @import url(../runo/styles.css);
 
-/* Application background */
-/*.v-app {
-  background: rgb(250, 153, 51);
-}*/
 .tData .top {
 	background: url(images/headerbg.jpg) repeat-x;
 }
+
 .tData .tabSheet{
 	position:absolute;
 	top:65px;
@@ -45,4 +42,8 @@
 
 .tData .mandatory {
 	background: lightpink;
+}
+
+.tData .showBorder {
+	border: 1px solid lightgray;
 }

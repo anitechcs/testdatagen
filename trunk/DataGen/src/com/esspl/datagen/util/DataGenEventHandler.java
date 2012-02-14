@@ -38,6 +38,7 @@ public class DataGenEventHandler {
         Item item = tdg.listing.getItem(rowId);
         Select formatSel = (Select)item.getItemProperty("Format").getValue();
         formatSel.removeAllItems();
+        formatSel.setEnabled(true);
         
         Label exampleSel = (Label)item.getItemProperty("Examples").getValue();
         exampleSel.setValue("NA");
@@ -49,6 +50,7 @@ public class DataGenEventHandler {
         
         if(event.getProperty().getValue() == null){
         	formatSel.setValue(null);
+        	formatSel.setEnabled(false);
         	return;
     	}
     	if(event.getProperty().getValue().equals("Name")){
@@ -108,6 +110,11 @@ public class DataGenEventHandler {
     		exampleSel.setValue("IT");
     	}else if(event.getProperty().getValue().equals("Company Name")){
     		exampleSel.setValue("Google");
+    	}
+    	
+    	//If there are no formats to show, then disable it
+    	if(formatSel.getItemIds().size() == 0){
+    		formatSel.setEnabled(false);
     	}
     	log.debug("DataGenEventHandler - onChangeDataType() method end");
     }
