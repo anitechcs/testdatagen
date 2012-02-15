@@ -15,4 +15,6 @@ public interface ContentDataValues {
 	String[] getTlds();
 	
 	String[] getCompanyNames();
+	
+	String[] getBooleanFlags();
 }

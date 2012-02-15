@@ -6,6 +6,7 @@ import com.esspl.datagen.DataGenApplication;
 import com.vaadin.data.Item;
 import com.vaadin.data.Property.ValueChangeEvent;
 import com.vaadin.ui.Alignment;
+import com.vaadin.ui.CheckBox;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.PopupDateField;
@@ -86,6 +87,9 @@ public class DataGenEventHandler {
     	}else if(event.getProperty().getValue().equals("Random Text")){
     		exampleSel.setValue("though");
     		addTextFields(addBar, "Min Length", "Max Length");
+    	}else if(event.getProperty().getValue().equals("Fixed Text")){
+    		exampleSel.setValue("ESSPL");
+    		addChkTextField(addBar, "Text", "Is Number");
     	}else if(event.getProperty().getValue().equals("Number Range")){
     		exampleSel.setValue("40");
     		addTextFields(addBar, "Start Number", "End Number");
@@ -110,6 +114,8 @@ public class DataGenEventHandler {
     		exampleSel.setValue("IT");
     	}else if(event.getProperty().getValue().equals("Company Name")){
     		exampleSel.setValue("Google");
+    	}else if(event.getProperty().getValue().equals("Boolean Flag")){
+    		exampleSel.setValue("Y");
     	}
     	
     	//If there are no formats to show, then disable it
@@ -233,5 +239,22 @@ public class DataGenEventHandler {
         addBar.addComponent(second);
         addBar.setComponentAlignment(second, Alignment.MIDDLE_LEFT);
         log.debug("DataGenEventHandler - addTextFields() method end");
+    }
+    
+    public void addChkTextField(HorizontalLayout addBar, String promptText1, String promptText2){
+    	log.debug("DataGenEventHandler - addSingleTextField() method start");
+    	TextField first = new TextField();
+    	first.setInputPrompt(promptText1);
+    	first.setWidth("97px");
+    	
+    	CheckBox cb = new CheckBox(promptText2);
+    	
+    	addBar.removeAllComponents();
+        addBar.setSpacing(true);
+        addBar.addComponent(first);
+        addBar.setComponentAlignment(first, Alignment.MIDDLE_LEFT);
+        addBar.addComponent(cb);
+        addBar.setComponentAlignment(cb, Alignment.MIDDLE_LEFT);
+        log.debug("DataGenEventHandler - addSingleTextField() method end");
     }
 }

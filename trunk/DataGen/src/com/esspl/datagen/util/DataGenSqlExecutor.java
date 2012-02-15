@@ -2,7 +2,9 @@ package com.esspl.datagen.util;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.Scanner;
 
 import org.apache.log4j.Logger;
 
@@ -48,22 +50,24 @@ public class DataGenSqlExecutor {
 		
 		//Initialize the splitter according to the database
 		if(argDataBase.equalsIgnoreCase("sql server")){
-			splitter = "GO";
+			splitter = "GO\n *";
 		}else{
-			splitter = ";";
+			splitter = ";\n *";
 		}
 		
 		try{
 			//Load database driver
 			Class.forName(DRIVER_NAME).newInstance();
-			addLog("Driver loaded successfully");
+			addLog("<font color='green'>Driver loaded successfully</font>");
 		}
 		catch(Exception e){
-			addLog("## Driver loading failed ##");
+			addLog("<font color='red'>## Driver loading failed ##");
 			addLog("## Error : "+e.getMessage());
 			for(int i = 0; i < e.getStackTrace().length; i++){
 				addLog(e.getStackTrace()[i].toString());
 			}
+			addLog("</font>");
+			e.printStackTrace();
 		}
 		log.debug("DataGenSqlExecutor - constructor end");
 	}
@@ -75,42 +79,56 @@ public class DataGenSqlExecutor {
 	public void execute(String script) {
 		log.debug("DataGenSqlExecutor - execute() method start");
 		int excutedScriptNumber = 0;
+		int totalScriptCount = 0;
+		Connection con = null;
+		Statement stmt = null;
+		
 		try {
-			StringBuilder sbScript = new StringBuilder(script);
-			//Using appropriate splitter, extract the well formed sql statements
 			addLog("Connecting to Database...");
-			String[] inst = sbScript.toString().split(splitter);
-			Connection c = DriverManager.getConnection(URL, USER, PASSWORD);
-			Statement st = c.createStatement();
-			addLog("Connection Successful.");
-
-			for(int j = 0; j<inst.length; j++){
-				if(!inst[j].trim().equals("")){
-					try {
-						addLog("Execution started->> "+inst[j]);
-						st.executeUpdate(inst[j]);
-						addLog("Execution completed sucessfully");
+			con = DriverManager.getConnection(URL, USER, PASSWORD);
+			stmt = con.createStatement();
+			addLog("<font color='green'>Connection Successful.</font>");
+			Scanner scanner =  new Scanner(script).useDelimiter(splitter);  
+	        while (scanner.hasNext()) {  
+	            String statement = scanner.next(); 
+	            if(!statement.trim().equals("")){
+	            	try {
+	            		totalScriptCount++;
+						addLog("Execution started->> "+statement);
+						stmt.executeUpdate(statement);
+						addLog("<font color='green'>Execution completed sucessfully</font>");
 						excutedScriptNumber++;
 					}catch(Exception e){
-						addLog("## Error occoured at : "+inst[j]+". Make sure every sql statements must ends with ';' ");
+						addLog("<font color='red'>## Error occoured at : "+statement+". Make sure every sql statements must ends with '"+splitter+"'");
 						addLog("## Error : "+e.getMessage());
 						for(int i = 0; i < e.getStackTrace().length; i++){
 							addLog(e.getStackTrace()[i].toString());
 						}
+						addLog("</font>");
+						e.printStackTrace();
 					}
-				}
-			}
-			addLog("######################");
+	            }
+	        }  
+			addLog("<font color='green'>######################");
 			addLog("## Execution Summary ##");
-			addLog("######################");
-			addLog("Total No. of Scripts- "+ (inst.length - 1));
+			addLog("######################</font>");
+			addLog("Total No. of Scripts- "+ totalScriptCount);
 			addLog("Successfully Executed Scripts- "+excutedScriptNumber);
 		}
 		catch(Exception e){
-			addLog("## Oops! Error occoured during Script execution.");
+			addLog("<font color='red'>## Oops! Error occoured during Script execution.");
 			addLog(e.getMessage());
 			for(int i = 0; i < e.getStackTrace().length; i++){
 				addLog(e.getStackTrace()[i].toString());
+			}
+			addLog("</font>");
+			e.printStackTrace();
+		}finally{
+			try {
+				con.close();
+				stmt.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
 			}
 		}
 		log.debug("DataGenSqlExecutor - execute() method end");
@@ -126,13 +144,14 @@ public class DataGenSqlExecutor {
 		addLog("Connecting to Database...");
 		try {
 			DriverManager.getConnection(URL, USER, PASSWORD);
-			addLog("Connection Successful.");
+			addLog("<font color='green'>Connection Successful.</font>");
 		} catch (Exception e) {
-			addLog("## Error in connecting to Database ##");
+			addLog("<font color='red'>## Error in connecting to Database ##");
 			addLog("## Error : "+e.getMessage());
 			for(int i = 0; i < e.getStackTrace().length; i++){
 				addLog(e.getStackTrace()[i].toString());
 			}
+			addLog("</font>");
 			return false;
 		}
 		return true;

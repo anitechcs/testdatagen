@@ -46,9 +46,11 @@ public class DefaultContentDataValues implements ContentDataValues {
 			"BMD", "Capgemini", "Sun Microsystem", "IBM", "Oracle",
 			"Microsoft", "Adobe", "LG", "Videocon", "Nokia", "Samsung", "Sony", "Lenevo", "Assus"};
 
-	private static String[] emailHosts = { "gmail", "hotmail", "yahoo", "rediffmail", "in", "bizmail"};
+	private static String[] emailHosts = {"gmail", "hotmail", "yahoo", "rediffmail", "in", "bizmail"};
 
-	private static String[] tlds = { "org", "net", "com", "biz", "us", "co.uk" ,"co.in", "in", "info"};
+	private static String[] tlds = {"org", "net", "com", "biz", "us", "co.uk" ,"co.in", "in", "info"};
+	
+	private static String[] flag = {"Y", "N"};
 
 	public String[] getWords() {
 		return words;
@@ -70,4 +72,7 @@ public class DefaultContentDataValues implements ContentDataValues {
 		return companyNames;
 	}
 	
+	public String[] getBooleanFlags() {
+		return flag;
+	}
 }
