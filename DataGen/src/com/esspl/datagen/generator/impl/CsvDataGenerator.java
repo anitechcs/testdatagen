@@ -11,6 +11,7 @@ import com.esspl.datagen.data.DataFactory;
 import com.esspl.datagen.generator.Generator;
 import com.esspl.datagen.ui.ResultView;
 import com.vaadin.data.Item;
+import com.vaadin.ui.CheckBox;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.PopupDateField;
 import com.vaadin.ui.Select;
@@ -102,6 +103,13 @@ public class CsvDataGenerator implements Generator{
         			data = df.getBusinessType();
         		}else if(dataType.equalsIgnoreCase("company name")){
         			data = df.getCompanyName();
+        		}else if(dataType.equalsIgnoreCase("fixed text")){
+        			HorizontalLayout hLayout = (HorizontalLayout)(item.getItemProperty("Additional Data").getValue());
+        			TextField textField = (TextField)hLayout.getComponent(0);
+        			String fixedText = (textField.getValue() == null || textField.getValue().toString().equals(""))?"":textField.getValue().toString();
+        			data = fixedText;
+        		}else if(dataType.equalsIgnoreCase("boolean flag")){
+        			data = df.getBooleanFlag();
         		}
         		
         		if(sb.length() > 0) sb.append(dataDelimeter+" ");

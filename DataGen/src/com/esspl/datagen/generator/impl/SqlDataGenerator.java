@@ -10,6 +10,7 @@ import com.esspl.datagen.GeneratorBean;
 import com.esspl.datagen.data.DataFactory;
 import com.esspl.datagen.generator.Generator;
 import com.vaadin.data.Item;
+import com.vaadin.ui.CheckBox;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.PopupDateField;
 import com.vaadin.ui.Select;
@@ -77,7 +78,7 @@ public class SqlDataGenerator implements Generator{
         			SimpleDateFormat sdf = new SimpleDateFormat(selFormat.getValue().toString());
         			String formatedStatDate = (startDate.getValue() == null || startDate.getValue().toString().equals(""))?"":sdf.format(startDate.getValue()).toString();
         			String formatedEndDate = (endDate.getValue() == null || endDate.getValue().toString().equals(""))?"":sdf.format(endDate.getValue()).toString();
-        			data = df.getDate(selFormat.getValue().toString(), formatedStatDate, formatedEndDate);
+        			data = "'"+df.getDate(selFormat.getValue().toString(), formatedStatDate, formatedEndDate)+"'";
         		}else if(dataType.equalsIgnoreCase("city")){
         			data = "'"+df.getCity()+"'";
         		}else if(dataType.equalsIgnoreCase("state/provience/county")){
@@ -121,6 +122,19 @@ public class SqlDataGenerator implements Generator{
         			data = "'"+df.getBusinessType()+"'";
         		}else if(dataType.equalsIgnoreCase("company name")){
         			data = "'"+df.getCompanyName()+"'";
+        		}else if(dataType.equalsIgnoreCase("fixed text")){
+        			HorizontalLayout hLayout = (HorizontalLayout)(item.getItemProperty("Additional Data").getValue());
+        			TextField textField = (TextField)hLayout.getComponent(0);
+        			String fixedText = (textField.getValue() == null || textField.getValue().toString().equals(""))?"":textField.getValue().toString();
+        			
+        			CheckBox cb = (CheckBox)hLayout.getComponent(1);
+        			if(cb.getValue() != null && Boolean.valueOf(cb.getValue().toString())){
+        				data = fixedText;
+        			}else{
+        				data = "'"+fixedText+"'";
+        			}
+        		}else if(dataType.equalsIgnoreCase("boolean flag")){
+        			data = "'"+df.getBooleanFlag()+"'";
         		}
         		
         		if(sb.length() > 0) sb.append(", ");
@@ -245,6 +259,14 @@ public class SqlDataGenerator implements Generator{
     			}else{
     				columnType = "VARCHAR2(100)";
     			}
+    		}else if(dataType.equalsIgnoreCase("fixed text")){
+    			if(database.equals("Sql Server")){
+    				columnType = "VARCHAR(100)";
+    			}else{
+    				columnType = "VARCHAR2(100)";
+    			}
+    		}else if(dataType.equalsIgnoreCase("boolean flag")){
+    			columnType = "CHAR(1)";
     		}
     		
     		if(sb.length() > 0) sb.append(", \n");

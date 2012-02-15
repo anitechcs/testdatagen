@@ -106,6 +106,13 @@ public class XmlDataGenerator implements Generator{
         			data = df.getBusinessType();
         		}else if(dataType.equalsIgnoreCase("company name")){
         			data = df.getCompanyName();
+        		}else if(dataType.equalsIgnoreCase("fixed text")){
+        			HorizontalLayout hLayout = (HorizontalLayout)(item.getItemProperty("Additional Data").getValue());
+        			TextField textField = (TextField)hLayout.getComponent(0);
+        			String fixedText = (textField.getValue() == null || textField.getValue().toString().equals(""))?"":textField.getValue().toString();
+        			data = fixedText;
+        		}else if(dataType.equalsIgnoreCase("boolean flag")){
+        			data = df.getBooleanFlag();
         		}
         		
         		sbColumnNames.append("\t\t<"+generatorBean.getColumnName()+">");

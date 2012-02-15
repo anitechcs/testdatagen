@@ -11,13 +11,14 @@ import com.vaadin.ui.AbsoluteLayout;
 import com.vaadin.ui.Accordion;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
+import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Panel;
+import com.vaadin.ui.PasswordField;
 import com.vaadin.ui.Select;
 import com.vaadin.ui.TextArea;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
-import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Window.Notification;
 
 /**
@@ -33,7 +34,7 @@ public class ExecutorLayout extends VerticalLayout implements ValueChangeListene
 	private Select scriptDatabase;
 	private TextField dbUrl;
 	private TextField userName;
-	private TextField password;
+	private PasswordField password;
 	public Panel logPanel;
 	
 	public ExecutorLayout(final DataGenApplication dataGenApplication){
@@ -69,7 +70,7 @@ public class ExecutorLayout extends VerticalLayout implements ValueChangeListene
 		userName = new TextField("User Name");
 		userName.setWidth("155px");
 		
-		password = new TextField("Password");
+		password = new PasswordField("Password");
 		password.setWidth("155px");
 		
 		abs = new AbsoluteLayout();
@@ -105,11 +106,17 @@ public class ExecutorLayout extends VerticalLayout implements ValueChangeListene
 		executeBttn.setIcon(DataGenConstant.EXECUTOR_ICON);
 		vl.addComponent(executeBttn);
 		
-		Button clearBttn = new Button("Clear Log");
-		clearBttn.setDescription("Clear the logs");
-		clearBttn.addListener(ClickEvent.class, this, "clearButtonClick");
-		clearBttn.setIcon(DataGenConstant.CLEAR_ICON);
-		vl.addComponent(clearBttn);
+		Button clearLogBttn = new Button("Clear Log");
+		clearLogBttn.setDescription("Clear the logs");
+		clearLogBttn.addListener(ClickEvent.class, this, "clearLogButtonClick");
+		clearLogBttn.setIcon(DataGenConstant.CLEAR_ICON);
+		vl.addComponent(clearLogBttn);
+		
+		Button clearScriptBttn = new Button("Clear Sql");
+		clearScriptBttn.setDescription("Clear the Sql Scripts");
+		clearScriptBttn.addListener(ClickEvent.class, this, "clearScriptButtonClick");
+		clearScriptBttn.setIcon(DataGenConstant.CLEAR_ICON);
+		vl.addComponent(clearScriptBttn);
 		
 		sriptHl.addComponent(vl);
 		sriptHl.setComponentAlignment(vl, Alignment.MIDDLE_LEFT);
@@ -166,9 +173,19 @@ public class ExecutorLayout extends VerticalLayout implements ValueChangeListene
 	 * 
 	 * @param event
 	 */
-	public void clearButtonClick(ClickEvent event) {
-		log.debug("ExecutorLayout - clearButtonClick() called");
+	public void clearLogButtonClick(ClickEvent event) {
+		log.debug("ExecutorLayout - clearLogButtonClick() called");
 		logPanel.removeAllComponents();
+    }
+	
+	/**
+	 * Clears the previous scripts.
+	 * 
+	 * @param event
+	 */
+	public void clearScriptButtonClick(ClickEvent event) {
+		log.debug("ExecutorLayout - clearScriptButtonClick() called");
+		dataApp.sqlScript.setValue("");
     }
 	
 	/**

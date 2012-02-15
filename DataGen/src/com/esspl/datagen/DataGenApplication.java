@@ -132,12 +132,12 @@ public class DataGenApplication extends Application implements ValueChangeListen
         listing.setHeight("240px");
         listing.setWidth("100%");
         listing.setStyleName("dataTable");
-        //listing.setSelectable(true);
         listing.setImmediate(true);
 
         // turn on column reordering and collapsing
         listing.setColumnReorderingAllowed(true);
         listing.setColumnCollapsingAllowed(true);
+        listing.setSortDisabled(true);
 
         // Add the table headers
         listing.addContainerProperty("Sl No.", Integer.class, null);
@@ -523,12 +523,14 @@ public class DataGenApplication extends Application implements ValueChangeListen
             dataType.addItem("State/Provience/County");
             dataType.addItem("Country");
             dataType.addItem("Random Text");
+            dataType.addItem("Fixed Text");
             dataType.addItem("Incremental Number");
             dataType.addItem("Number Range");
             dataType.addItem("Alphanumeric");
             dataType.addItem("Maratial Status");
             dataType.addItem("Department Name");
             dataType.addItem("Company Name");
+            dataType.addItem("Boolean Flag");
             dataType.setSizeFull();
             dataType.setImmediate(true);
             dataType.setData(i);

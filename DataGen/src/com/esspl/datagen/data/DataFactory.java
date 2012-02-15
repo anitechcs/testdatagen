@@ -742,6 +742,16 @@ public final class DataFactory {
 				+ getItem(contentDataValues.getTlds());
 		return email.toLowerCase();
 	}
+	
+	/**
+	 * Generates an boolean flag e.g. Y/N
+	 *
+	 * @return an boolean flag
+	 */
+	public String getBooleanFlag(){
+		log.debug("DataFactory - getBooleanFlag() method called");
+		return getItem(contentDataValues.getBooleanFlags());
+	}
 
 	/**
 	 * Gives you a true/false based on a probability with a random number
