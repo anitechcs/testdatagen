@@ -18,6 +18,7 @@ import com.vaadin.data.Item;
 import com.vaadin.data.Property.ValueChangeEvent;
 import com.vaadin.data.Property.ValueChangeListener;
 import com.vaadin.data.validator.IntegerValidator;
+import com.vaadin.event.ShortcutAction.KeyCode;
 import com.vaadin.terminal.gwt.server.WebApplicationContext;
 import com.vaadin.terminal.gwt.server.WebBrowser;
 import com.vaadin.ui.Alignment;
@@ -318,6 +319,7 @@ public class DataGenApplication extends Application implements ValueChangeListen
         //Generate Button
         Button bttn = new Button("Generate");
         bttn.setDescription("Generate Gata");
+        bttn.setClickShortcut(KeyCode.ENTER);
         bttn.addListener(ClickEvent.class, this, "generateButtonClick"); // react to clicks
         bttn.setIcon(DataGenConstant.VIEW);
         bttn.setStyleName("generate");
@@ -527,7 +529,7 @@ public class DataGenApplication extends Application implements ValueChangeListen
             dataType.addItem("Incremental Number");
             dataType.addItem("Number Range");
             dataType.addItem("Alphanumeric");
-            dataType.addItem("Maratial Status");
+            dataType.addItem("Marital Status");
             dataType.addItem("Department Name");
             dataType.addItem("Company Name");
             dataType.addItem("Boolean Flag");

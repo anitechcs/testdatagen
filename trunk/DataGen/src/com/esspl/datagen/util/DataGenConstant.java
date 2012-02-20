@@ -12,7 +12,7 @@ import com.vaadin.terminal.ThemeResource;
 public class DataGenConstant {
 
 	//Formats
-	public static final String[] NAME_FORMATS = {"First_Name Last_Name", "First_Name", "Sur_Name Last_Name", "Sur_Name First_Name", "Sur_Name First_Name Last_Name"};
+	public static final String[] NAME_FORMATS = {"First_Name Last_Name", "First_Name", "Last_Name", "Sur_Name Last_Name", "Sur_Name First_Name", "Sur_Name First_Name Last_Name"};
 	
 	public static final String[] DATE_FORMATS = {"MM/dd/yyyy", "dd/MM/yyyy", "yyyy-MM-dd", "MMM dd, yyyy", "dd MMM, yy", "yyyy-MM-dd HH:mm:ss", "MM/dd/yyyy HH:mm:ss", "MM.dd.yyyy", "dd.MM.yyyy"};
 	
