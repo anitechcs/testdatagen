@@ -3,6 +3,7 @@ package com.esspl.datagen.util;
 import org.apache.log4j.Logger;
 
 import com.esspl.datagen.DataGenApplication;
+import com.esspl.datagen.data.DataFactory;
 import com.vaadin.data.Item;
 import com.vaadin.data.Property.ValueChangeEvent;
 import com.vaadin.ui.Alignment;
@@ -21,6 +22,7 @@ import com.vaadin.ui.TextField;
 public class DataGenEventHandler {
 
 	private static final Logger log = Logger.getLogger(DataGenEventHandler.class);
+	private DataFactory df = new DataFactory();
 	
 	public void onChangeSelect(ValueChangeEvent event){
 		log.debug("DataGenEventHandler - onChangeSelect() method called");
@@ -85,37 +87,37 @@ public class DataGenEventHandler {
     		formatSel.setNullSelectionAllowed(false);
     		formatSel.setValue("Full");
     	}else if(event.getProperty().getValue().equals("Random Text")){
-    		exampleSel.setValue("though");
+    		exampleSel.setValue(df.getRandomText(6));
     		addTextFields(addBar, "Min Length", "Max Length");
     	}else if(event.getProperty().getValue().equals("Fixed Text")){
-    		exampleSel.setValue("ESSPL");
+    		exampleSel.setValue(df.getRandomWord());
     		addChkTextField(addBar, "Text", "Is Number");
     	}else if(event.getProperty().getValue().equals("Number Range")){
-    		exampleSel.setValue("40");
+    		exampleSel.setValue(df.getNumberBetween(10, 1000));
     		addTextFields(addBar, "Start Number", "End Number");
     	}else if(event.getProperty().getValue().equals("Alphanumeric")){
     		exampleSel.setValue("SD0358");
     		addTextFields(addBar, "Starting Text", "Total Length");
     	}else if(event.getProperty().getValue().equals("Title")){//Examples start
-    		exampleSel.setValue("Mr.");
+    		exampleSel.setValue(df.getPrefix());
     	}else if(event.getProperty().getValue().equals("Email")){
-    		exampleSel.setValue("ansh@gmail.com");
+    		exampleSel.setValue(df.getEmailAddress());
     	}else if(event.getProperty().getValue().equals("Street Address")){
-    		exampleSel.setValue("Infocity");
+    		exampleSel.setValue(df.getStreetName());
     	}else if(event.getProperty().getValue().equals("City")){
-    		exampleSel.setValue("Bhubaneswar");
+    		exampleSel.setValue(df.getCity());
     	}else if(event.getProperty().getValue().equals("Country")){
-    		exampleSel.setValue("India");
+    		exampleSel.setValue(df.getCountry());
     	}else if(event.getProperty().getValue().equals("Incremental Number")){
     		exampleSel.setValue("1, 2, 3, 4, 5..");
-    	}else if(event.getProperty().getValue().equals("Maratial Status")){
-    		exampleSel.setValue("Single");
+    	}else if(event.getProperty().getValue().equals("Marital Status")){
+    		exampleSel.setValue(df.getStatus());
     	}else if(event.getProperty().getValue().equals("Department Name")){
-    		exampleSel.setValue("IT");
+    		exampleSel.setValue(df.getBusinessType());
     	}else if(event.getProperty().getValue().equals("Company Name")){
-    		exampleSel.setValue("Google");
+    		exampleSel.setValue(df.getCompanyName());
     	}else if(event.getProperty().getValue().equals("Boolean Flag")){
-    		exampleSel.setValue("Y");
+    		exampleSel.setValue(df.getBooleanFlag());
     	}
     	
     	//If there are no formats to show, then disable it
@@ -141,58 +143,60 @@ public class DataGenEventHandler {
     	}
         //Name examples
     	if(event.getProperty().getValue().equals("First_Name Last_Name")){
-    		exampleSel.setValue("Tapas Jena");
+    		exampleSel.setValue(df.getName("First_Name Last_Name"));
     	}else if(event.getProperty().getValue().equals("First_Name")){
-    		exampleSel.setValue("Tapas");
+    		exampleSel.setValue(df.getName("First_Name"));
+    	}else if(event.getProperty().getValue().equals("Last_Name")){
+    		exampleSel.setValue(df.getName("Last_Name"));
     	}else if(event.getProperty().getValue().equals("Sur_Name Last_Name")){
-    		exampleSel.setValue("Mr. Jena");
+    		exampleSel.setValue(df.getName("Sur_Name Last_Name"));
     	}else if(event.getProperty().getValue().equals("Sur_Name First_Name")){
-    		exampleSel.setValue("Mr. Tapas");
+    		exampleSel.setValue(df.getName("Sur_Name First_Name"));
     	}else if(event.getProperty().getValue().equals("Sur_Name First_Name Last_Name")){
-    		exampleSel.setValue("Mr. Tapas Jena");
+    		exampleSel.setValue(df.getName("Sur_Name First_Name Last_Name"));
     	}else if(event.getProperty().getValue().equals("MM/dd/yyyy")){//Date Examples start
-    		exampleSel.setValue("06/05/2012");
+    		exampleSel.setValue(df.getDate("MM/dd/yyyy", "", ""));
     		addDateFields(select, addBar);
     	}else if(event.getProperty().getValue().equals("dd/MM/yyyy")){
-    		exampleSel.setValue("05/06/2011");
+    		exampleSel.setValue(df.getDate("dd/MM/yyyy", "", ""));
     		addDateFields(select, addBar);
     	}else if(event.getProperty().getValue().equals("yyyy-MM-dd")){
-    		exampleSel.setValue("2012-06-05");
+    		exampleSel.setValue(df.getDate("yyyy-MM-dd", "", ""));
     		addDateFields(select, addBar);
     	}else if(event.getProperty().getValue().equals("MMM dd, yyyy")){
-    		exampleSel.setValue("Jun 5, 2012");
+    		exampleSel.setValue(df.getDate("MMM dd, yyyy", "", ""));
     		addDateFields(select, addBar);
     	}else if(event.getProperty().getValue().equals("dd MMM, yy")){
-    		exampleSel.setValue("05 Jun, 12");
+    		exampleSel.setValue(df.getDate("dd MMM, yy", "", ""));
     		addDateFields(select, addBar);
     	}else if(event.getProperty().getValue().equals("yyyy-MM-dd HH:mm:ss")){
-    		exampleSel.setValue("2012-06-05 02:35:12");
+    		exampleSel.setValue(df.getDate("yyyy-MM-dd HH:mm:ss", "", ""));
     		addDateFields(select, addBar);
     	}else if(event.getProperty().getValue().equals("MM/dd/yyyy HH:mm:ss")){
-    		exampleSel.setValue("06/05/2011 02:25:45");
+    		exampleSel.setValue(df.getDate("MM/dd/yyyy HH:mm:ss", "", ""));
     		addDateFields(select, addBar);
     	}else if(event.getProperty().getValue().equals("MM.dd.yyyy")){
-    		exampleSel.setValue("06.05.2011");
+    		exampleSel.setValue(df.getDate("MM.dd.yyyy", "", ""));
     		addDateFields(select, addBar);
     	}else if(event.getProperty().getValue().equals("dd.MM.yyyy")){
-    		exampleSel.setValue("05.06.2012");
+    		exampleSel.setValue(df.getDate("dd.MM.yyyy", "", ""));
     		addDateFields(select, addBar);
     	}else if(event.getProperty().getValue().equals("India") && dataSel.getValue().equals("Phone/Fax")){//Phone Examples start
-    		exampleSel.setValue("91983360616");
+    		exampleSel.setValue(df.getPhoneNumber("India"));
     	}else if(event.getProperty().getValue().equals("USA/Canada") && dataSel.getValue().equals("Phone/Fax")){
-    		exampleSel.setValue("1-800-555-5555");
+    		exampleSel.setValue(df.getPhoneNumber("USA/Canada"));
     	}else if(event.getProperty().getValue().equals("UK") && dataSel.getValue().equals("Phone/Fax")){
-    		exampleSel.setValue("(020) 7222 1234");
+    		exampleSel.setValue(df.getPhoneNumber("UK"));
     	}else if(event.getProperty().getValue().equals("India") && dataSel.getValue().equals("Postal/Zip")){//Zip Examples start
-    		exampleSel.setValue("752026");
+    		exampleSel.setValue(df.getZipCode("India"));
     	}else if(event.getProperty().getValue().equals("Canada") && dataSel.getValue().equals("Postal/Zip")){
-    		exampleSel.setValue("V3H 1Z7");
+    		exampleSel.setValue(df.getZipCode("Canada"));
     	}else if(event.getProperty().getValue().equals("USA") && dataSel.getValue().equals("Postal/Zip")){
-    		exampleSel.setValue("52079");
+    		exampleSel.setValue(df.getZipCode("USA"));
     	}else if(event.getProperty().getValue().equals("Full")){//State Examples start
-    		exampleSel.setValue("Los Angeles");
+    		exampleSel.setValue(df.getState("Full"));
     	}else if(event.getProperty().getValue().equals("Sort")){
-    		exampleSel.setValue("LA");
+    		exampleSel.setValue(df.getState("Sort"));
     	}
     	log.debug("DataGenEventHandler - onChangeFormat() method end");
     }
@@ -226,11 +230,11 @@ public class DataGenEventHandler {
     	log.debug("DataGenEventHandler - addTextFields() method start");
     	TextField first = new TextField();
     	first.setInputPrompt(promptText1);
-    	first.setWidth("97px");
+    	first.setWidth("95px");
     	
     	TextField second = new TextField();
     	second.setInputPrompt(promptText2);
-    	second.setWidth("97px");
+    	second.setWidth("95px");
     	
     	addBar.removeAllComponents();
         addBar.setSpacing(true);
@@ -245,7 +249,7 @@ public class DataGenEventHandler {
     	log.debug("DataGenEventHandler - addSingleTextField() method start");
     	TextField first = new TextField();
     	first.setInputPrompt(promptText1);
-    	first.setWidth("97px");
+    	first.setWidth("95px");
     	
     	CheckBox cb = new CheckBox(promptText2);
     	

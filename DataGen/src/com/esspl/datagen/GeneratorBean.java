@@ -1,11 +1,13 @@
 package com.esspl.datagen;
 
+import java.io.Serializable;
+
 
 /**
  * @author Tapas
  *
  */
-public class GeneratorBean {
+public class GeneratorBean implements Serializable{
 	
 	private int id;
 	private String columnName;

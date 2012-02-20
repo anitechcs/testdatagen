@@ -78,7 +78,7 @@ public class SqlDataGenerator implements Generator{
         			SimpleDateFormat sdf = new SimpleDateFormat(selFormat.getValue().toString());
         			String formatedStatDate = (startDate.getValue() == null || startDate.getValue().toString().equals(""))?"":sdf.format(startDate.getValue()).toString();
         			String formatedEndDate = (endDate.getValue() == null || endDate.getValue().toString().equals(""))?"":sdf.format(endDate.getValue()).toString();
-        			data = "'"+df.getDate(selFormat.getValue().toString(), formatedStatDate, formatedEndDate)+"'";
+        			data = "to_date('"+df.getDate(selFormat.getValue().toString(), formatedStatDate, formatedEndDate)+"', '"+selFormat.getValue().toString()+"')";
         		}else if(dataType.equalsIgnoreCase("city")){
         			data = "'"+df.getCity()+"'";
         		}else if(dataType.equalsIgnoreCase("state/provience/county")){
@@ -207,9 +207,9 @@ public class SqlDataGenerator implements Generator{
     			}
     		}else if(dataType.equalsIgnoreCase("phone/fax")){
     			if(database.equals("Sql Server")){
-    				columnType = "VARCHAR(10)";
+    				columnType = "VARCHAR(14)";
     			}else{
-    				columnType = "VARCHAR2(10)";
+    				columnType = "VARCHAR2(14)";
     			}
     		}else if(dataType.equalsIgnoreCase("country")){
     			if(database.equals("Sql Server")){
@@ -227,13 +227,13 @@ public class SqlDataGenerator implements Generator{
     			if(database.equals("Sql Server")){
     				columnType = "INT";
     			}else{
-    				columnType = "NUMBER(100)";
+    				columnType = "NUMBER(10)";
     			}
     		}else if(dataType.equalsIgnoreCase("number range")){
     			if(database.equals("Sql Server")){
     				columnType = "INT";
     			}else{
-    				columnType = "NUMBER(100)";
+    				columnType = "NUMBER(10)";
     			}
     		}else if(dataType.equalsIgnoreCase("alphanumeric")){
     			if(database.equals("Sql Server")){

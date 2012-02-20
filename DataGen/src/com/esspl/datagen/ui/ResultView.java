@@ -1,8 +1,10 @@
 package com.esspl.datagen.ui;
 
+import java.awt.HeadlessException;
 import java.awt.Toolkit;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
+import java.awt.datatransfer.Transferable;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -22,12 +24,12 @@ import com.esspl.datagen.util.DataGenConstant;
 import com.esspl.datagen.util.DataGenExportUtility;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
+import com.vaadin.ui.Button.ClickEvent;
+import com.vaadin.ui.Button.ClickListener;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.TextArea;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Window;
-import com.vaadin.ui.Button.ClickEvent;
-import com.vaadin.ui.Button.ClickListener;
 
 /**
  * @author Tapas
@@ -81,9 +83,16 @@ public class ResultView extends Window {
 	    Button copy = new Button("Copy", new ClickListener() {
             public void buttonClick(ClickEvent event) {
             	log.info("ResultView - Copy Button clicked");
-            	StringSelection stringSelection = new StringSelection(message.getValue().toString());
-                Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
-                clipboard.setContents( stringSelection, null );
+            	//As on Unix environment, it gives headless exception we need to handle it
+            	try {
+					//StringSelection stringSelection = new StringSelection(message.getValue().toString());
+            		Transferable tText = new StringSelection(message.getValue().toString());
+					Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+					clipboard.setContents(tText, null );
+				} catch (HeadlessException e) {
+					dataGenApplication.getMainWindow().showNotification("Due to some problem Text could not be copied.");
+					e.printStackTrace();
+				}
             }
         });
 	    copy.setIcon(DataGenConstant.COPY_ICON);
