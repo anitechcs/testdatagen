@@ -27,6 +27,7 @@ public class DataGenConstant {
 	public static final ThemeResource HELP_ICON = new ThemeResource("images/help.png");
 	public static final ThemeResource ABOUT_ICON = new ThemeResource("images/AboutUs.png");
 	public static final ThemeResource EXECUTOR_ICON = new ThemeResource("images/Sql-runner.png");
+	public static final ThemeResource EXPLORER_ICON = new ThemeResource("images/explorer.png");
 	
 	//Logo
 	public static final ThemeResource LOGO = new ThemeResource("images/logo.jpg");
@@ -40,6 +41,12 @@ public class DataGenConstant {
 	public static final ThemeResource SETTING_ICON = new ThemeResource("images/setting.png");
 	public static final ThemeResource ACCEPT_ICON = new ThemeResource("images/accept.png");
 	public static final ThemeResource HELP_SCREEN = new ThemeResource("images/DG.png");
+	public static final ThemeResource DB_SETTING_ICON = new ThemeResource("images/dbsettings.jpg");
+	public static final ThemeResource DB_CONNECT_ICON = new ThemeResource("images/connect.png");
+	public static final ThemeResource DB_DISCONNECT_ICON = new ThemeResource("images/disconnect.png");
+	public static final ThemeResource ADD_SMALL = new ThemeResource("images/add_small.gif");
+	public static final ThemeResource CLEAR_SMALL = new ThemeResource("images/Clear.gif");
+	public static final ThemeResource DELETE_SMALL = new ThemeResource("images/delete.gif");
 	
 	//Help Content
 	public static final String HELP_CONTENT = "<h1>How to Create Test Data using DATA Gen™</h1>"

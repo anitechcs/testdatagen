@@ -15,7 +15,7 @@ import java.util.ArrayList;
 import org.apache.log4j.Logger;
 
 import com.esspl.datagen.DataGenApplication;
-import com.esspl.datagen.GeneratorBean;
+import com.esspl.datagen.common.GeneratorBean;
 import com.esspl.datagen.generator.Generator;
 import com.esspl.datagen.generator.impl.CsvDataGenerator;
 import com.esspl.datagen.generator.impl.SqlDataGenerator;
@@ -101,7 +101,7 @@ public class ResultView extends Window {
             public void buttonClick(ClickEvent event) {
             	log.info("ResultView - Execute Button clicked");
             	dataGenApplication.tabSheet.setSelectedTab(dataGenApplication.executor);
-            	dataGenApplication.sqlScript.setValue(message.getValue().toString());
+            	dataGenApplication.executor.setScript(message.getValue().toString());
             	dataGenApplication.getMainWindow().removeWindow(event.getButton().getWindow());
             }
         });

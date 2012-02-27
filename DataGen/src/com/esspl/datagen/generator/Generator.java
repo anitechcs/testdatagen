@@ -6,7 +6,7 @@ package com.esspl.datagen.generator;
 import java.util.ArrayList;
 
 import com.esspl.datagen.DataGenApplication;
-import com.esspl.datagen.GeneratorBean;
+import com.esspl.datagen.common.GeneratorBean;
 
 /**
  * @author tapasj

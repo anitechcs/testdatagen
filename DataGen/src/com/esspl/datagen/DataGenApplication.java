@@ -7,10 +7,14 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 
+import com.esspl.datagen.common.DatabaseSessionManager;
+import com.esspl.datagen.common.GeneratorBean;
 import com.esspl.datagen.generator.Generator;
 import com.esspl.datagen.generator.impl.ExcelDataGenerator;
-import com.esspl.datagen.ui.ExecutorLayout;
+import com.esspl.datagen.ui.ExplorerView;
+import com.esspl.datagen.ui.ExecutorView;
 import com.esspl.datagen.ui.ResultView;
+import com.esspl.datagen.ui.ToolBar;
 import com.esspl.datagen.util.DataGenConstant;
 import com.esspl.datagen.util.DataGenEventHandler;
 import com.vaadin.Application;
@@ -23,7 +27,9 @@ import com.vaadin.terminal.gwt.server.WebApplicationContext;
 import com.vaadin.terminal.gwt.server.WebBrowser;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
+import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.CheckBox;
+import com.vaadin.ui.CustomComponent;
 import com.vaadin.ui.Embedded;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
@@ -31,14 +37,12 @@ import com.vaadin.ui.OptionGroup;
 import com.vaadin.ui.Panel;
 import com.vaadin.ui.Select;
 import com.vaadin.ui.TabSheet;
+import com.vaadin.ui.TabSheet.Tab;
 import com.vaadin.ui.Table;
 import com.vaadin.ui.TextArea;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Window;
-import com.vaadin.ui.Button.ClickEvent;
-import com.vaadin.ui.Button.ClickListener;
-import com.vaadin.ui.TabSheet.Tab;
 import com.vaadin.ui.Window.Notification;
 import com.vaadin.ui.themes.Runo;
 
@@ -54,7 +58,8 @@ public class DataGenApplication extends Application implements ValueChangeListen
 	private static final Logger log = Logger.getLogger(DataGenApplication.class);
     private ArrayList<GeneratorBean> rowList = new ArrayList<GeneratorBean>();
     private int tableLength = 1;//for internal use only
-    
+
+    public DatabaseSessionManager databaseSessionManager;
     public ResultView resultWindow;
     public Button rowsBttn;
     public Table listing;
@@ -71,14 +76,17 @@ public class DataGenApplication extends Application implements ValueChangeListen
     public TextField csvDelimiter;
     public TabSheet tabSheet;
     public Tab executorTab;
-    public VerticalLayout executor;
-    public TextArea sqlScript;
+    public ExecutorView executor;
+    public ExplorerView explorer;
     public TextField rootNode;
     public TextField recordNode;
+    public Label connectedString;
+    public ToolBar toolbar;
 
     @Override
     public void init() {
     	log.debug("DataGenApplication - init() start");
+    	databaseSessionManager = new DatabaseSessionManager();
         //We'll build the whole UI inside the method buildMainLayout
         buildMainLayout();
         setTheme("testdatagenerator");
@@ -118,17 +126,18 @@ public class DataGenApplication extends Application implements ValueChangeListen
         header.addComponent(logo);
         header.setSpacing(false);
         
-        //Reload button
-        Button reset = new Button("Reset", new ClickListener() {
-            public void buttonClick(ClickEvent event) {
-            	getMainWindow().getApplication().close();
-            }
-        });
-        reset.setIcon(DataGenConstant.RESET);
-        reset.setStyleName("reload");
-        top.addComponent(reset);
-        top.setComponentAlignment(reset, Alignment.TOP_RIGHT);
-
+        //Show which connection profile is connected
+        connectedString = new Label("Connected to - Oracle");
+        connectedString.setStyleName("connectedString");
+        connectedString.setWidth("500px");
+        connectedString.setVisible(false);
+        top.addComponent(connectedString);
+        
+        //Toolbar
+        toolbar = new ToolBar(this);
+        top.addComponent(toolbar);
+        top.setComponentAlignment(toolbar, Alignment.TOP_RIGHT);
+        
         listing = new Table();
         listing.setHeight("240px");
         listing.setWidth("100%");
@@ -319,7 +328,6 @@ public class DataGenApplication extends Application implements ValueChangeListen
         //Generate Button
         Button bttn = new Button("Generate");
         bttn.setDescription("Generate Gata");
-        bttn.setClickShortcut(KeyCode.ENTER);
         bttn.addListener(ClickEvent.class, this, "generateButtonClick"); // react to clicks
         bttn.setIcon(DataGenConstant.VIEW);
         bttn.setStyleName("generate");
@@ -327,11 +335,14 @@ public class DataGenApplication extends Application implements ValueChangeListen
         //Generator Tab content end
         
         //Executer Tab content start - new class created to separate execution logic
-        executor = new ExecutorLayout(this);
-        executor.setMargin(true);
+        executor = new ExecutorView(this);
         //Executer Tab content end
         
-
+        //Explorer Tab content start - new class created to separate execution logic
+        explorer = new ExplorerView(this, databaseSessionManager);
+        //explorer.setMargin(true);
+        //Explorer Tab content end
+        
         //About Tab content start
         VerticalLayout about = new VerticalLayout();
         about.setMargin(true);
@@ -359,6 +370,7 @@ public class DataGenApplication extends Application implements ValueChangeListen
         //Add the respective contents to the tab sheet
         tabSheet.addTab(generator, "Generator", DataGenConstant.HOME_ICON);
         executorTab = tabSheet.addTab(executor, "Executor", DataGenConstant.EXECUTOR_ICON);
+        tabSheet.addTab(explorer, "Explorer", DataGenConstant.EXPLORER_ICON);
         tabSheet.addTab(about, "About", DataGenConstant.ABOUT_ICON);
         tabSheet.addTab(help, "Help", DataGenConstant.HELP_ICON);
 
