@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import org.apache.log4j.Logger;
 
 import com.esspl.datagen.DataGenApplication;
-import com.esspl.datagen.GeneratorBean;
+import com.esspl.datagen.common.GeneratorBean;
 import com.esspl.datagen.data.DataFactory;
 import com.esspl.datagen.generator.Generator;
 import com.esspl.datagen.ui.ResultView;
