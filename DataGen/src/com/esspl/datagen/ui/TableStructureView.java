@@ -23,7 +23,7 @@ public class TableStructureView extends CustomComponent {
         setCaption("Structure");
         try {
             ResultSet attributes = connection.getMetaData().getColumns(table.getCatalog(), table.getSchema(), table.getName(), null);
-            ResultSetTable resultSetTable = new ResultSetTable(attributes, Arrays.asList("", "COLUMN_NAME", "TYPE_NAME", "COLUMN_SIZE", "DECIMAL_DIGITS", "IS_NULLABLE", "IS_AUTOINCREMENT", "COLUMN_DEF", "REMARKS"));
+            SelectableResultSetTable resultSetTable = new SelectableResultSetTable(attributes, Arrays.asList("CHECK", "COLUMN_NAME", "TYPE_NAME", "COLUMN_SIZE", "DECIMAL_DIGITS", "IS_NULLABLE", "IS_AUTOINCREMENT", "COLUMN_DEF", "REMARKS"));
             resultSetTable.setSizeFull();
             setCompositionRoot(resultSetTable);
             JdbcUtils.close(attributes);

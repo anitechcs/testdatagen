@@ -7,6 +7,7 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 
+import com.esspl.datagen.DataGenApplication;
 import com.esspl.datagen.common.DatabaseSessionManager;
 import com.esspl.datagen.common.DetailsListener;
 import com.esspl.datagen.common.JdbcTable;
@@ -37,8 +38,10 @@ public class TableSelectorView extends VerticalLayout {
     private MetadataRetriever metadataRetriever;
     private IndexedContainer tableListContainer;
     private DetailsListener detailsListener;
+    private DataGenApplication dataGenApplication;
 
-    public TableSelectorView(DatabaseSessionManager sessionManager) {
+    public TableSelectorView(DatabaseSessionManager sessionManager, DataGenApplication dataApp) {
+    	dataGenApplication = dataApp;
         try {
             connection = sessionManager.getConnection();
             if(connection != null){
@@ -167,7 +170,7 @@ public class TableSelectorView extends VerticalLayout {
     }
 
     protected Component createDetails(JdbcTable table) {
-        TableDetailsView dv = new TableDetailsView(table, connection);
+        TableDetailsView dv = new TableDetailsView(table, connection, dataGenApplication);
         return dv;
     }
 

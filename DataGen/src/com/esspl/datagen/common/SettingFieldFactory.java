@@ -51,8 +51,6 @@ public class SettingFieldFactory extends DefaultFieldFactory {
             tf.setWidth("90%");
         }else if("password".equals(propertyId)) {
             PasswordField pf = (PasswordField) f;
-            pf.setRequired(true);
-            pf.setRequiredError("Please enter the password");
             pf.setWidth("90%");
         }
 

@@ -3,23 +3,30 @@ package com.esspl.datagen.ui;
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
 import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.Iterator;
 
 import org.apache.log4j.Logger;
 
+import com.esspl.datagen.DataGenApplication;
 import com.esspl.datagen.common.JdbcTable;
 import com.esspl.datagen.util.DataGenConstant;
 import com.esspl.datagen.util.JdbcUtils;
+import com.vaadin.data.Item;
+import com.vaadin.data.validator.IntegerValidator;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
-import com.vaadin.ui.Button.ClickEvent;
+import com.vaadin.ui.CheckBox;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.CustomComponent;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
+import com.vaadin.ui.Button.ClickEvent;
 
 /**
  *@author Tapas
@@ -28,20 +35,24 @@ import com.vaadin.ui.VerticalLayout;
 public class TableDataView extends CustomComponent {
 
 	private static final Logger log = Logger.getLogger(ExplorerView.class);
-
+	private DataGenApplication dataGenApplication;
     private VerticalLayout tableContainer;
     private HorizontalLayout content;
+    private TextField rows;
+    private ArrayList<String> columns = new ArrayList<String>();
 
-    public TableDataView(final JdbcTable table, final Connection connection) {
+    public TableDataView(final JdbcTable table, final Connection connection, DataGenApplication dataApp) {
     	log.debug("TableDataView - constructor start");
         setCaption("Data");
-
+        dataGenApplication = dataApp;
         VerticalLayout vl = new VerticalLayout();
         vl.setSizeFull();
         setCompositionRoot(vl);
 
-        TextField rows = new TextField();
+        rows = new TextField();
         rows.setWidth("50px");
+        rows.setImmediate(true);
+        rows.addValidator(new IntegerValidator("Rows must be an Integer"));
         Label lbl = new Label("Generate ");
 
         content = new HorizontalLayout();
@@ -58,7 +69,7 @@ public class TableDataView extends CustomComponent {
             @Override
             public void buttonClick(ClickEvent event) {
             	log.debug("TableDataView - Generate Data Button clicked");
-                populateGenerator();
+                populateGenerator(table);
             }
         });
         addDataButton.addStyleName("small");
@@ -99,6 +110,10 @@ public class TableDataView extends CustomComponent {
             rs = stmt.executeQuery("select * from " + createTableName(table, connection));
             component = new ResultSetTable(rs);
             component.setSizeFull();
+            ResultSetMetaData meta = rs.getMetaData();
+            for(int i=1;i<=meta.getColumnCount();i++){
+            	columns.add(meta.getColumnName(i));
+            }
         } catch (SQLException ex) {
             log.warn("failed to retrieve table data", ex);
             component = new Label(ex.getMessage());
@@ -121,8 +136,28 @@ public class TableDataView extends CustomComponent {
         return sb.toString();
     }
     
-    protected void populateGenerator(){
+    protected void populateGenerator(JdbcTable table){
     	log.debug("TableDataView - populateGenerator() called");
-    	//TODO: logic goes here
+    	if(rows.getValue() != null){
+    		dataGenApplication.resultNum.setValue(rows.getValue().toString());
+    	}
+    	dataGenApplication.tblName.setValue(table.getName().toUpperCase());
+    	dataGenApplication.createQuery.setValue(false);
+    	dataGenApplication.tabSheet.setSelectedTab(dataGenApplication.generator);
+    	int generatorLength = dataGenApplication.listing.getItemIds().size();
+    	//If there are more column than the present generated row, we need to add new rows first
+    	if(columns.size() > generatorLength){
+    		dataGenApplication.addRow(columns.size() - generatorLength);
+    	}
+    	Iterator iter = dataGenApplication.listing.getItemIds().iterator();
+    	while(iter.hasNext()){
+    		int row = (Integer)iter.next();
+    		Item item = dataGenApplication.listing.getItem(row);
+    		TextField txtField = (TextField)(item.getItemProperty("Column Name").getValue());
+    		if(columns.size() > 0){
+    			txtField.setValue(columns.get(0));
+    			columns.remove(0);
+    		}
+    	}
     }
 }

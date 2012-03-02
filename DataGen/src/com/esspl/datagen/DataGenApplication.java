@@ -6,13 +6,14 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.apache.log4j.Logger;
+import org.h2.util.StringUtils;
 
 import com.esspl.datagen.common.DatabaseSessionManager;
 import com.esspl.datagen.common.GeneratorBean;
 import com.esspl.datagen.generator.Generator;
 import com.esspl.datagen.generator.impl.ExcelDataGenerator;
-import com.esspl.datagen.ui.ExplorerView;
 import com.esspl.datagen.ui.ExecutorView;
+import com.esspl.datagen.ui.ExplorerView;
 import com.esspl.datagen.ui.ResultView;
 import com.esspl.datagen.ui.ToolBar;
 import com.esspl.datagen.util.DataGenConstant;
@@ -22,14 +23,11 @@ import com.vaadin.data.Item;
 import com.vaadin.data.Property.ValueChangeEvent;
 import com.vaadin.data.Property.ValueChangeListener;
 import com.vaadin.data.validator.IntegerValidator;
-import com.vaadin.event.ShortcutAction.KeyCode;
 import com.vaadin.terminal.gwt.server.WebApplicationContext;
 import com.vaadin.terminal.gwt.server.WebBrowser;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
-import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.CheckBox;
-import com.vaadin.ui.CustomComponent;
 import com.vaadin.ui.Embedded;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
@@ -37,12 +35,12 @@ import com.vaadin.ui.OptionGroup;
 import com.vaadin.ui.Panel;
 import com.vaadin.ui.Select;
 import com.vaadin.ui.TabSheet;
-import com.vaadin.ui.TabSheet.Tab;
 import com.vaadin.ui.Table;
-import com.vaadin.ui.TextArea;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Window;
+import com.vaadin.ui.Button.ClickEvent;
+import com.vaadin.ui.TabSheet.Tab;
 import com.vaadin.ui.Window.Notification;
 import com.vaadin.ui.themes.Runo;
 
@@ -76,6 +74,8 @@ public class DataGenApplication extends Application implements ValueChangeListen
     public TextField csvDelimiter;
     public TabSheet tabSheet;
     public Tab executorTab;
+    public Tab explorerTab;
+    public VerticalLayout generator;
     public ExecutorView executor;
     public ExplorerView explorer;
     public TextField rootNode;
@@ -173,7 +173,7 @@ public class DataGenApplication extends Application implements ValueChangeListen
         }
 
         //Generator Tab content start
-        VerticalLayout generator = new VerticalLayout();
+        generator = new VerticalLayout();
         generator.setMargin(true, true, false, true);
 
         generateTypeHl = new HorizontalLayout();
@@ -294,7 +294,7 @@ public class DataGenApplication extends Application implements ValueChangeListen
         noOfRowHl.setMargin(true, false, false, true);
         noOfRowHl.addComponent(new Label("Number of Results"));
         resultNum = new TextField();
-        resultNum.setNullRepresentation("");
+        resultNum.setImmediate(true);
         resultNum.setNullSettingAllowed(false);
         resultNum.setStyleName("mandatory");
         resultNum.addValidator(new IntegerValidator("Number of Results must be an Integer"));
@@ -309,7 +309,7 @@ public class DataGenApplication extends Application implements ValueChangeListen
         addRowHl.setSpacing(true);
         addRowHl.addComponent(new Label("Add"));
         rowNum = new TextField();
-        rowNum.setNullRepresentation("");
+        rowNum.setImmediate(true);
         rowNum.setNullSettingAllowed(true);
         rowNum.addValidator(new IntegerValidator("Row number must be an Integer"));
         rowNum.setWidth("4em");
@@ -370,7 +370,7 @@ public class DataGenApplication extends Application implements ValueChangeListen
         //Add the respective contents to the tab sheet
         tabSheet.addTab(generator, "Generator", DataGenConstant.HOME_ICON);
         executorTab = tabSheet.addTab(executor, "Executor", DataGenConstant.EXECUTOR_ICON);
-        tabSheet.addTab(explorer, "Explorer", DataGenConstant.EXPLORER_ICON);
+        explorerTab = tabSheet.addTab(explorer, "Explorer", DataGenConstant.EXPLORER_ICON);
         tabSheet.addTab(about, "About", DataGenConstant.ABOUT_ICON);
         tabSheet.addTab(help, "Help", DataGenConstant.HELP_ICON);
 
@@ -389,12 +389,15 @@ public class DataGenApplication extends Application implements ValueChangeListen
      */
     public void generateButtonClick (Button.ClickEvent event) {
     	log.debug("DataGenApplication - generateButtonClick() start");
-    	if(resultNum.getValue() == null || resultNum.getValue().toString().equals("")){
+    	if(resultNum.getValue() == null || StringUtils.isNullOrEmpty(resultNum.getValue().toString())){
     		getMainWindow().showNotification("Number of result field cannot be blank!", Notification.TYPE_ERROR_MESSAGE);
     		log.info("DataGenApplication - No. Of result field is blank");
     		return;
-    	}
-    	if(Integer.parseInt(resultNum.getValue().toString()) > 10000){
+    	}else if(!StringUtils.isNumber(resultNum.getValue().toString())){
+    		getMainWindow().showNotification("Number of results must be an Integer!", Notification.TYPE_ERROR_MESSAGE);
+    		log.info("DataGenApplication - No. Of results is Text");
+    		return;
+    	}else if(Integer.parseInt(resultNum.getValue().toString()) > 10000){
     		getMainWindow().showNotification("Number of results cannot be more than 10000!", Notification.TYPE_ERROR_MESSAGE);
     		log.info("DataGenApplication - No. Of results is greater than 10000");
     		return;
@@ -467,8 +470,12 @@ public class DataGenApplication extends Application implements ValueChangeListen
      */
     public void addRowButtonClick(ClickEvent event) {
     	log.debug("DataGenApplication - addRowButtonClick() start");
-    	if(rowNum.getValue() == null || rowNum.getValue().toString().equals("")){
+    	if(rowNum.getValue() == null || StringUtils.isNullOrEmpty(rowNum.getValue().toString())){
     		getMainWindow().showNotification("Number of rows field cannot be blank!", Notification.TYPE_ERROR_MESSAGE);
+    		return;
+    	}else if(!StringUtils.isNumber(rowNum.getValue().toString())){
+    		getMainWindow().showNotification("Number of rows must be an Integer!", Notification.TYPE_ERROR_MESSAGE);
+    		log.info("DataGenApplication - No. Of rows is Text");
     		return;
     	}
     	addRow(Integer.parseInt(rowNum.getValue().toString()));
@@ -492,24 +499,28 @@ public class DataGenApplication extends Application implements ValueChangeListen
         	generateTypeHl.removeComponent(sqlPanel);
         	generateTypeHl.addComponent(csvPanel);
         	executorTab.setEnabled(false);
+        	explorerTab.setEnabled(false);
         }else if(event.getProperty().getValue().equals("XML")){
         	log.info("DataGenApplication : valueChange() - XML type selected");
         	generateTypeHl.removeComponent(csvPanel);
         	generateTypeHl.removeComponent(sqlPanel);
         	generateTypeHl.addComponent(xmlPanel);
         	executorTab.setEnabled(false);
+        	explorerTab.setEnabled(false);
         }else if(event.getProperty().getValue().equals("Sql")){
         	log.info("DataGenApplication : valueChange() - SQL type selected");
         	generateTypeHl.removeComponent(xmlPanel);
         	generateTypeHl.removeComponent(csvPanel);
         	generateTypeHl.addComponent(sqlPanel);
         	executorTab.setEnabled(true);
+        	explorerTab.setEnabled(true);
         }else if(event.getProperty().getValue().equals("Excel")){
         	log.info("DataGenApplication : valueChange() - Excel type selected");
         	generateTypeHl.removeComponent(xmlPanel);
         	generateTypeHl.removeComponent(sqlPanel);
         	generateTypeHl.removeComponent(csvPanel);
         	executorTab.setEnabled(false);
+        	explorerTab.setEnabled(false);
         }else{
         	handler.onChangeSelect(event);
         }
@@ -545,6 +556,7 @@ public class DataGenApplication extends Application implements ValueChangeListen
             dataType.addItem("Department Name");
             dataType.addItem("Company Name");
             dataType.addItem("Boolean Flag");
+            dataType.addItem("Passport Number");
             dataType.setSizeFull();
             dataType.setImmediate(true);
             dataType.setData(i);

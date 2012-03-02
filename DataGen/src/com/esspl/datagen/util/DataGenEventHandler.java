@@ -6,6 +6,7 @@ import com.esspl.datagen.DataGenApplication;
 import com.esspl.datagen.data.DataFactory;
 import com.vaadin.data.Item;
 import com.vaadin.data.Property.ValueChangeEvent;
+import com.vaadin.data.validator.IntegerValidator;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.CheckBox;
 import com.vaadin.ui.HorizontalLayout;
@@ -110,6 +111,7 @@ public class DataGenEventHandler {
     		exampleSel.setValue(df.getCountry());
     	}else if(event.getProperty().getValue().equals("Incremental Number")){
     		exampleSel.setValue("1, 2, 3, 4, 5..");
+    		addSingleTextField(addBar, "Starting From");
     	}else if(event.getProperty().getValue().equals("Marital Status")){
     		exampleSel.setValue(df.getStatus());
     	}else if(event.getProperty().getValue().equals("Department Name")){
@@ -118,6 +120,8 @@ public class DataGenEventHandler {
     		exampleSel.setValue(df.getCompanyName());
     	}else if(event.getProperty().getValue().equals("Boolean Flag")){
     		exampleSel.setValue(df.getBooleanFlag());
+    	}else if(event.getProperty().getValue().equals("Passport Number")){
+    		exampleSel.setValue(df.getPassportNumber());
     	}
     	
     	//If there are no formats to show, then disable it
@@ -231,10 +235,18 @@ public class DataGenEventHandler {
     	TextField first = new TextField();
     	first.setInputPrompt(promptText1);
     	first.setWidth("95px");
+    	first.setImmediate(true);
+    	if(promptText1.endsWith("Length") || promptText1.endsWith("Number") || promptText1.equals("Starting From")){
+    		first.addValidator(new IntegerValidator(promptText1+" must be an Integer"));
+    	}
     	
     	TextField second = new TextField();
     	second.setInputPrompt(promptText2);
     	second.setWidth("95px");
+    	second.setImmediate(true);
+    	if(promptText2.endsWith("Length") || promptText2.endsWith("Number") || promptText2.equals("Starting From")){
+    		second.addValidator(new IntegerValidator(promptText2+" must be an Integer"));
+    	}
     	
     	addBar.removeAllComponents();
         addBar.setSpacing(true);
@@ -245,11 +257,32 @@ public class DataGenEventHandler {
         log.debug("DataGenEventHandler - addTextFields() method end");
     }
     
+    public void addSingleTextField(HorizontalLayout addBar, String promptText1){
+    	log.debug("DataGenEventHandler - addSingleTextField() method start");
+    	TextField first = new TextField();
+    	first.setInputPrompt(promptText1);
+    	first.setWidth("95px");
+    	first.setImmediate(true);
+    	if(promptText1.endsWith("Length") || promptText1.endsWith("Number") || promptText1.equals("Starting From")){
+    		first.addValidator(new IntegerValidator(promptText1+" must be an Integer"));
+    	}
+    	
+    	addBar.removeAllComponents();
+        addBar.setSpacing(true);
+        addBar.addComponent(first);
+        addBar.setComponentAlignment(first, Alignment.MIDDLE_CENTER);
+        log.debug("DataGenEventHandler - addSingleTextField() method end");
+    }
+    
     public void addChkTextField(HorizontalLayout addBar, String promptText1, String promptText2){
     	log.debug("DataGenEventHandler - addSingleTextField() method start");
     	TextField first = new TextField();
     	first.setInputPrompt(promptText1);
     	first.setWidth("95px");
+    	first.setImmediate(true);
+    	if(promptText1.endsWith("Length") || promptText1.endsWith("Number") || promptText1.equals("Starting From")){
+    		first.addValidator(new IntegerValidator(promptText1+" must be an Integer"));
+    	}
     	
     	CheckBox cb = new CheckBox(promptText2);
     	

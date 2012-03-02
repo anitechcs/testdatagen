@@ -101,7 +101,14 @@ public class SqlDataGenerator implements Generator{
         			int maxLength = (maxLengthField.getValue() == null || maxLengthField.getValue().toString().equals(""))?10:Integer.parseInt(maxLengthField.getValue().toString());
         			data = "'"+df.getRandomText(minLength, maxLength)+"'";
         		}else if(dataType.equalsIgnoreCase("incremental number")){
-        			data = String.valueOf(row+1);
+        			HorizontalLayout hLayout = (HorizontalLayout)(item.getItemProperty("Additional Data").getValue());
+        			TextField startingFrom = (TextField)hLayout.getComponent(0);
+        			int startNumber = (startingFrom.getValue() == null || startingFrom.getValue().toString().equals(""))?0:Integer.parseInt(startingFrom.getValue().toString());
+        			if(startNumber > 0){
+        				data = String.valueOf(row+startNumber);
+        			}else{
+        				data = String.valueOf(row+1);
+        			}
         		}else if(dataType.equalsIgnoreCase("number range")){
         			HorizontalLayout hLayout = (HorizontalLayout)(item.getItemProperty("Additional Data").getValue());
         			TextField minNumberField = (TextField)hLayout.getComponent(0);
@@ -135,6 +142,8 @@ public class SqlDataGenerator implements Generator{
         			}
         		}else if(dataType.equalsIgnoreCase("boolean flag")){
         			data = "'"+df.getBooleanFlag()+"'";
+        		}else if(dataType.equalsIgnoreCase("passport number")){
+        			data = "'"+df.getPassportNumber()+"'";
         		}
         		
         		if(sb.length() > 0) sb.append(", ");
@@ -267,6 +276,12 @@ public class SqlDataGenerator implements Generator{
     			}
     		}else if(dataType.equalsIgnoreCase("boolean flag")){
     			columnType = "CHAR(1)";
+    		}else if(dataType.equalsIgnoreCase("boolean flag")){
+    			if(database.equals("Sql Server")){
+    				columnType = "VARCHAR(10)";
+    			}else{
+    				columnType = "VARCHAR2(10)";
+    			}
     		}
     		
     		if(sb.length() > 0) sb.append(", \n");

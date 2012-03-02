@@ -1,8 +1,6 @@
 package com.esspl.datagen.ui;
 
 import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
 import java.util.Arrays;
 
 import org.apache.log4j.Logger;
@@ -15,18 +13,17 @@ import com.vaadin.event.ShortcutAction;
 import com.vaadin.event.ShortcutListener;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
+import com.vaadin.ui.Button.ClickEvent;
+import com.vaadin.ui.Button.ClickListener;
 import com.vaadin.ui.ComboBox;
 import com.vaadin.ui.CustomComponent;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.TabSheet;
+import com.vaadin.ui.TabSheet.Tab;
 import com.vaadin.ui.TextArea;
-import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.VerticalSplitPanel;
-import com.vaadin.ui.Button.ClickEvent;
-import com.vaadin.ui.Button.ClickListener;
-import com.vaadin.ui.TabSheet.Tab;
 import com.vaadin.ui.Window.Notification;
 import com.vaadin.ui.themes.Runo;
 
@@ -137,7 +134,7 @@ public class ExecutorView extends CustomComponent {
         vl.addComponent(splitPanel);
         vl.setExpandRatio(splitPanel, 1);
 
-        sqlScript.addShortcutListener(new ShortcutListener("Run Query", null, ShortcutAction.KeyCode.ENTER, ShortcutAction.ModifierKey.CTRL) {
+        sqlScript.addShortcutListener(new ShortcutListener("Execute Script", null, ShortcutAction.KeyCode.ENTER, ShortcutAction.ModifierKey.CTRL) {
 
             @Override
             public void handleAction(Object sender, Object target) {
