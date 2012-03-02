@@ -754,6 +754,18 @@ public final class DataFactory {
 		log.debug("DataFactory - getBooleanFlag() method called");
 		return getItem(contentDataValues.getBooleanFlags());
 	}
+	
+	/**
+	 * Return an Passport number e.g- J9974144
+	 *
+	 * @return Passport number
+	 */
+	public String getPassportNumber(){
+		log.debug("DataFactory - getPassportNumber() method called");
+		String result = getRandomChar() +getNumberText(7);
+		
+		return result;
+	}
 
 	/**
 	 * Gives you a true/false based on a probability with a random number

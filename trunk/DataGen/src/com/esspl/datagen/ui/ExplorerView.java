@@ -29,7 +29,7 @@ public class ExplorerView extends CustomComponent {
         sp.setSizeFull();
         sp.setLocked(true);
         
-        TableSelectorView tableSelectorView = new TableSelectorView(databaseSessionManager);
+        TableSelectorView tableSelectorView = new TableSelectorView(databaseSessionManager, dataApp);
         tableSelectorView.setDetailsListener(new DetailsListener() {
 
             @Override
