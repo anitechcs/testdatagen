@@ -60,11 +60,13 @@ public class MetadataRetriever {
     public List<JdbcTable> getTables(String catalog, String schema, String tableType) throws SQLException {
         ArrayList<JdbcTable> rez = new ArrayList<JdbcTable>();
         ResultSet tables = metaData.getTables(catalog, schema, null, new String[]{tableType});
-        while (tables.next())
-            rez.add(new JdbcTable(
-                    tables.getString("TABLE_CAT"),
-                    tables.getString("TABLE_SCHEM"),
-                    tables.getString("TABLE_NAME")));
+        while (tables.next()){
+        	String tableName = tables.getString("TABLE_NAME");
+        	//Special Checking add as in Oracle it is showing system tables as well
+        	if(tableName.indexOf("$") == -1 && tableName.toLowerCase().indexOf("htmldb_plan_table") == -1){
+        		rez.add(new JdbcTable(tables.getString("TABLE_CAT"), tables.getString("TABLE_SCHEM"), tableName));
+        	}
+        }
         tables.close();
         return rez;
     }
