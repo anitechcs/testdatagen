@@ -10,6 +10,8 @@ import com.esspl.datagen.ui.ExecutorView;
 import com.esspl.datagen.ui.ResultSetTable;
 
 /**
+ * DBScript Executor Utility for DataGen
+ * 
  * @author Tapas
  *
  */
@@ -61,7 +63,8 @@ public class DataGenSqlExecutor {
 							addLog(e.getStackTrace()[i].toString());
 						}
 						addLog("</font>");
-						e.printStackTrace();
+						executorView.resultSheet.setSelectedTab(executorView.logText);
+						return "";
 					}
 					if (!hasResultSet) {
 						int cnt = stmt.getUpdateCount();
@@ -76,7 +79,6 @@ public class DataGenSqlExecutor {
 	                executorView.logText.setValue("");
 	                statMsg = "rows fetched: " + table.getItemIds().size();
 	            } else {
-	                int cnt = stmt.getUpdateCount();
 	                executorView.resultSheet.setSelectedTab(executorView.logText);
 	                statMsg = "rows updated: " + totalUpdatedCount;
 	            }
