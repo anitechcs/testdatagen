@@ -28,9 +28,7 @@ import com.esspl.datagen.DataGenApplication;
 import com.esspl.datagen.common.GeneratorBean;
 import com.esspl.datagen.data.DataFactory;
 import com.esspl.datagen.generator.Generator;
-import com.esspl.datagen.ui.ResultView;
 import com.vaadin.data.Item;
-import com.vaadin.ui.CheckBox;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.PopupDateField;
 import com.vaadin.ui.Select;
@@ -150,11 +148,11 @@ public class CsvDataGenerator implements Generator{
 		return getResultData();
 	}
 
-	public void addResultData(String csvData){
+	private void addResultData(String csvData){
 		sbCSV.append(csvData+"\n");
     }
     
-    public String getResultData(){
+	private String getResultData(){
     	return sbCSV.toString();
     }
     

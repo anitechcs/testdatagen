@@ -28,6 +28,7 @@ import com.esspl.datagen.DataGenApplication;
 import com.esspl.datagen.common.GeneratorBean;
 import com.esspl.datagen.data.DataFactory;
 import com.esspl.datagen.generator.Generator;
+import com.esspl.datagen.util.DataGenDialect;
 import com.vaadin.data.Item;
 import com.vaadin.ui.CheckBox;
 import com.vaadin.ui.HorizontalLayout;
@@ -179,151 +180,72 @@ public class SqlDataGenerator implements Generator{
 		return getCreateData()+getResultData();
 	}
 	
+	/**
+	 * This method is responsible for generating table CREATE statement
+	 * It uses utility class DataGenDialect for generating datatypes in db angnostic manner
+	 * 
+	 * @param rowList
+	 */
     public void generateCreateData(ArrayList<GeneratorBean> rowList){
     	log.debug("SqlDataGenerator - generateCreateData() method start");
-    	StringBuilder sb = new StringBuilder();
+    	DataGenDialect dialect = new DataGenDialect(database);
+    	StringBuilder sbText = new StringBuilder();
     	for(GeneratorBean generatorBean : rowList){
     		String columnType = "";
     		String dataType = generatorBean.getDataType();
-    		if(dataType.equalsIgnoreCase("name")){
-    			if(database.equals("Sql Server")){
-    				columnType = "VARCHAR(100)";
-    			}else{
-    				columnType = "VARCHAR2(100)";
-    			}
-    		}else if(dataType.equalsIgnoreCase("email")){
-    			if(database.equals("Sql Server")){
-    				columnType = "VARCHAR(100)";
-    			}else{
-    				columnType = "VARCHAR2(100)";
-    			}
-    		}else if(dataType.equalsIgnoreCase("date")){
-    			if(database.equals("Sql Server")){
-    				columnType = "DATETIME";
-    			}else{
-    				columnType = "DATE";
-    			}
-    		}else if(dataType.equalsIgnoreCase("city")){
-    			if(database.equals("Sql Server")){
-    				columnType = "VARCHAR(100)";
-    			}else{
-    				columnType = "VARCHAR2(100)";
-    			}
-    		}else if(dataType.equalsIgnoreCase("state/provience/county")){
-    			if(database.equals("Sql Server")){
-    				columnType = "VARCHAR(100)";
-    			}else{
-    				columnType = "VARCHAR2(100)";
-    			}
-    		}else if(dataType.equalsIgnoreCase("postal/zip")){
-    			if(database.equals("Sql Server")){
-    				columnType = "VARCHAR(10)";
-    			}else{
-    				columnType = "VARCHAR2(10)";
-    			}
-    		}else if(dataType.equalsIgnoreCase("street address")){
-    			if(database.equals("Sql Server")){
-    				columnType = "VARCHAR(100)";
-    			}else{
-    				columnType = "VARCHAR2(100)";
-    			}
-    		}else if(dataType.equalsIgnoreCase("title")){
-    			if(database.equals("Sql Server")){
-    				columnType = "VARCHAR(100)";
-    			}else{
-    				columnType = "VARCHAR2(100)";
-    			}
-    		}else if(dataType.equalsIgnoreCase("phone/fax")){
-    			if(database.equals("Sql Server")){
-    				columnType = "VARCHAR(14)";
-    			}else{
-    				columnType = "VARCHAR2(14)";
-    			}
-    		}else if(dataType.equalsIgnoreCase("country")){
-    			if(database.equals("Sql Server")){
-    				columnType = "VARCHAR(100)";
-    			}else{
-    				columnType = "VARCHAR2(100)";
-    			}
-    		}else if(dataType.equalsIgnoreCase("random text")){
-    			if(database.equals("Sql Server")){
-    				columnType = "VARCHAR(100)";
-    			}else{
-    				columnType = "VARCHAR2(100)";
-    			}
-    		}else if(dataType.equalsIgnoreCase("incremental number")){
-    			if(database.equals("Sql Server")){
-    				columnType = "INT";
-    			}else{
-    				columnType = "NUMBER(10)";
-    			}
-    		}else if(dataType.equalsIgnoreCase("number range")){
-    			if(database.equals("Sql Server")){
-    				columnType = "INT";
-    			}else{
-    				columnType = "NUMBER(10)";
-    			}
-    		}else if(dataType.equalsIgnoreCase("alphanumeric")){
-    			if(database.equals("Sql Server")){
-    				columnType = "VARCHAR(100)";
-    			}else{
-    				columnType = "VARCHAR2(100)";
-    			}
-    		}else if(dataType.equalsIgnoreCase("maratial status")){
-    			if(database.equals("Sql Server")){
-    				columnType = "VARCHAR(100)";
-    			}else{
-    				columnType = "VARCHAR2(100)";
-    			}
-    		}else if(dataType.equalsIgnoreCase("department name")){
-    			if(database.equals("Sql Server")){
-    				columnType = "VARCHAR(100)";
-    			}else{
-    				columnType = "VARCHAR2(100)";
-    			}
-    		}else if(dataType.equalsIgnoreCase("company name")){
-    			if(database.equals("Sql Server")){
-    				columnType = "VARCHAR(100)";
-    			}else{
-    				columnType = "VARCHAR2(100)";
-    			}
-    		}else if(dataType.equalsIgnoreCase("fixed text")){
-    			if(database.equals("Sql Server")){
-    				columnType = "VARCHAR(100)";
-    			}else{
-    				columnType = "VARCHAR2(100)";
-    			}
-    		}else if(dataType.equalsIgnoreCase("boolean flag")){
-    			columnType = "CHAR(1)";
-    		}else if(dataType.equalsIgnoreCase("boolean flag")){
-    			if(database.equals("Sql Server")){
-    				columnType = "VARCHAR(10)";
-    			}else{
-    				columnType = "VARCHAR2(10)";
-    			}
+    		if(dataType.equalsIgnoreCase("name") || dataType.equalsIgnoreCase("email") || dataType.equalsIgnoreCase("city") || dataType.equalsIgnoreCase("state/provience/county") || dataType.equalsIgnoreCase("street address") || dataType.equalsIgnoreCase("title") || dataType.equalsIgnoreCase("country") || dataType.equalsIgnoreCase("random text") || dataType.equalsIgnoreCase("alphanumeric") || dataType.equalsIgnoreCase("department name") || dataType.equalsIgnoreCase("company name")){
+    			//By default size will be 100
+    			columnType = dialect.getStringDataType();
+    		}
+    		else if(dataType.equalsIgnoreCase("date")){
+    			columnType = dialect.getDateDataType();
+    		}
+    		else if(dataType.equalsIgnoreCase("postal/zip") || dataType.equalsIgnoreCase("passport number")){
+    			//We explicitly passed the size as 10
+    			columnType = dialect.getStringDataType(10);
+    		}
+    		else if(dataType.equalsIgnoreCase("phone/fax")){
+    			//We explicitly passed the size as 15
+    			columnType = dialect.getStringDataType(15);
+    		}
+    		else if(dataType.equalsIgnoreCase("incremental number") || dataType.equalsIgnoreCase("number range")){
+    			//We explicitly passed the size as 10
+    			columnType = dialect.getNumberDataType(10);
+    		}
+    		else if(dataType.equalsIgnoreCase("maratial status")){
+    			//By default size will be 20
+    			columnType = dialect.getStringDataType(20);
+    		}
+    		else if(dataType.equalsIgnoreCase("fixed text")){
+    			//By default size will be 200
+    			columnType = dialect.getStringDataType(200);
+    		}
+    		else if(dataType.equalsIgnoreCase("boolean flag")){
+    			//Get boolean CHAR type
+    			columnType = dialect.getCharDataType();
     		}
     		
-    		if(sb.length() > 0) sb.append(", \n");
-    		sb.append("\t").append(generatorBean.getColumnName()).append("\t").append(columnType).append("\t").append("NULL");
+    		if(sbText.length() > 0) sbText.append(", \n");
+    		sbText.append("\t").append(generatorBean.getColumnName()).append("\t").append(columnType).append("\t").append("NULL");
     	}
     	
-    	addCreateData("CREATE TABLE "+tableName.toUpperCase()+" (\n"+sb.toString()+"\n)"+lineSeparator);
+    	addCreateData("CREATE TABLE "+tableName.toUpperCase()+" (\n"+sbText.toString()+"\n)"+lineSeparator);
     	log.debug("SqlDataGenerator - generateCreateData() method end");
     }
     
-    public void addCreateData(String createData){
+    private void addCreateData(String createData){
     	sbCreate.append(createData).append("\n\n");
     }
     
-    public void addResultData(String insertData){
+    private void addResultData(String insertData){
     	sbInsert.append(insertData+lineSeparator+"\n");
     }
     
-    public String getCreateData(){
+    private String getCreateData(){
     	return sbCreate.toString();
     }
     
-    public String getResultData(){
+    private String getResultData(){
     	return sbInsert.toString();
     }
 

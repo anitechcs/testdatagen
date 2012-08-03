@@ -155,11 +155,11 @@ public class XmlDataGenerator implements Generator{
 		return getXmlData();
 	}
 	
-	public void addXmlData(String xmlData){
+	private void addXmlData(String xmlData){
 		sbXml.append(xmlData).append("\n");
     }
 	
-	public String getXmlData(){
+	private String getXmlData(){
     	return sbXml.toString();
     }
 
