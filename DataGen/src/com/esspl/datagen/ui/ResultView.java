@@ -53,7 +53,7 @@ import com.vaadin.ui.Window;
 /**
  * @author Tapas
  */
-
+@SuppressWarnings("serial")
 public class ResultView extends Window {
     
 	private static final Logger log = Logger.getLogger(ResultView.class);

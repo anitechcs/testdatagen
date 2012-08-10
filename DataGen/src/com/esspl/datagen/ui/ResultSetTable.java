@@ -41,6 +41,7 @@ import com.vaadin.ui.VerticalLayout;
  *@author Tapas
  *
  */
+@SuppressWarnings("serial")
 public class ResultSetTable extends CustomComponent {
 
 	private static final Logger log = Logger.getLogger(ResultSetTable.class);

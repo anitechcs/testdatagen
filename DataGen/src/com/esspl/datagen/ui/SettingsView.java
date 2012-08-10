@@ -21,6 +21,8 @@ package com.esspl.datagen.ui;
 
 import java.util.List;
 
+import org.apache.log4j.Logger;
+
 import com.esspl.datagen.DataGenApplication;
 import com.esspl.datagen.common.SettingsManager;
 import com.esspl.datagen.config.ConnectionProfile;
@@ -40,8 +42,11 @@ import com.vaadin.ui.Window;
  * @author Tapas
  * 
  */
+@SuppressWarnings("serial")
 public class SettingsView extends Window {
 
+	private static final Logger log = Logger.getLogger(SettingsView.class);
+	
     private ListSelect list;
     private Panel panel;
     private DetailsPanel details;
@@ -67,6 +72,7 @@ public class SettingsView extends Window {
     }
 
     private void refreshDetails() {
+    	log.debug("SettingsView->refreshDetails()-----Refreshing page.");
         panel.removeAllComponents();
 
         ConnectionProfile profile = (ConnectionProfile) list.getValue();
@@ -80,11 +86,13 @@ public class SettingsView extends Window {
     }
 
     private DetailsPanel createDetails(ConnectionProfile profile) {
+    	log.debug("SettingsView->createDetails()-----Creating Detail Section.");
         DetailsPanel detailsPanel = new DetailsPanel(profile, list, dataGenApplication);
         return detailsPanel;
     }
 
     private GridLayout createMainLayout() {
+    	log.debug("SettingsView->createMainLayout()-----Creating Main Layout.");
         GridLayout layout = new GridLayout(1, 2);
         layout.setSpacing(true);
         layout.setMargin(true);

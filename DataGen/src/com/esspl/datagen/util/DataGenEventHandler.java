@@ -42,6 +42,7 @@ import com.vaadin.ui.TextField;
 public class DataGenEventHandler {
 
 	private static final Logger log = Logger.getLogger(DataGenEventHandler.class);
+	
 	private DataFactory df = new DataFactory();
 	
 	public void onChangeSelect(ValueChangeEvent event){

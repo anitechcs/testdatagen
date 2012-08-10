@@ -43,6 +43,7 @@ import com.vaadin.ui.TextField;
 public class SqlDataGenerator implements Generator{
 	
 	private static final Logger log = Logger.getLogger(SqlDataGenerator.class);
+	
     private StringBuilder sbCreate = new StringBuilder();
     private StringBuilder sbInsert = new StringBuilder();
     

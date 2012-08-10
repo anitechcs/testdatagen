@@ -21,12 +21,13 @@ package com.esspl.datagen.common;
 
 import java.io.Serializable;
 
-
 /**
  * @author Tapas
  *
  */
 public class GeneratorBean implements Serializable{
+	
+	private static final long serialVersionUID = 1L;
 	
 	private int id;
 	private String columnName;

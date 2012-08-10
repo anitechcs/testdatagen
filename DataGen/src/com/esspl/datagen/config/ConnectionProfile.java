@@ -29,6 +29,7 @@ import javax.xml.bind.annotation.XmlAttribute;
  *@author Tapas
  *
  */
+@SuppressWarnings("serial")
 @XmlAccessorType(XmlAccessType.NONE)
 public class ConnectionProfile implements Serializable {
 

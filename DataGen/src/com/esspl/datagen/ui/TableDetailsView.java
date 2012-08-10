@@ -28,12 +28,13 @@ import com.vaadin.ui.TabSheet;
 import com.vaadin.ui.themes.Runo;
 
 /**
- *
+ * @author Tapas
  *
  */
+@SuppressWarnings("serial")
 public class TableDetailsView extends CustomComponent {
 
-    private final TabSheet tabSheet;
+	private final TabSheet tabSheet;
 
     public TableDetailsView(JdbcTable table, Connection connection, DataGenApplication dataApp) {
         tabSheet = new TabSheet();

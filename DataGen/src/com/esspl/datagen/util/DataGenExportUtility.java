@@ -33,9 +33,11 @@ import com.vaadin.terminal.StreamResource;
  * @author Tapas
  *
  */
+@SuppressWarnings("serial")
 public class DataGenExportUtility extends StreamResource {
 
 	private static final Logger log = Logger.getLogger(DataGenExportUtility.class);
+	
 	private final String filename;
 	private String contentType;
 

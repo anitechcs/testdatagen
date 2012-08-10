@@ -34,7 +34,6 @@ import com.esspl.datagen.config.Configuration;
 import com.esspl.datagen.config.ConnectionProfile;
 import com.google.common.io.Files;
 
-
 /**
  *@author Tapas
  *
@@ -42,6 +41,7 @@ import com.google.common.io.Files;
 public class SettingsManager {
 
 	private static final Logger log = Logger.getLogger(SettingsManager.class);
+	
     private static final String FILE_PATH = "DataGen" + File.separator + "config";
     private static final File SETTINGS_DIR = new File(System.getProperty("user.home") + File.separator + FILE_PATH);
     private static final File SETTINGS_FILE = new File(SETTINGS_DIR, "datagen-settings.xml");

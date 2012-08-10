@@ -41,6 +41,7 @@ import com.vaadin.ui.TextField;
 public class CsvDataGenerator implements Generator{
 	
 	private static final Logger log = Logger.getLogger(CsvDataGenerator.class);
+	
 	private StringBuilder sbCSV = new StringBuilder();
     private String dataDelimeter = ", ";
 

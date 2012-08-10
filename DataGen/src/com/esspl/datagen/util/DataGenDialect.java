@@ -36,6 +36,7 @@ public class DataGenDialect {
 	 * This is made private so that no one can make a instance by directly calling this constructor.
 	 * Use parameterised constructor always. 
 	 */
+	@SuppressWarnings("unused")
 	private DataGenDialect(){
 		
 	}

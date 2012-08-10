@@ -33,6 +33,7 @@ import com.vaadin.ui.TextField;
  * 
  * FieldFactory for customizing the fields and adding validators
  */
+@SuppressWarnings("serial")
 public class SettingFieldFactory extends DefaultFieldFactory {
 
 	private static final Logger log = Logger.getLogger(SettingFieldFactory.class);
@@ -77,6 +78,7 @@ public class SettingFieldFactory extends DefaultFieldFactory {
     }
     
     private PasswordField createPasswordField(Object propertyId) {
+    	log.debug("Creating Password Field.");
         PasswordField pf = new PasswordField();
         pf.setCaption(DefaultFieldFactory.createCaptionByPropertyId(propertyId));
         return pf;
