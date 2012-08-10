@@ -67,6 +67,10 @@ public class DataGenConstant {
 	public static final ThemeResource CLEAR_SMALL = new ThemeResource("images/Clear.gif");
 	public static final ThemeResource DELETE_SMALL = new ThemeResource("images/delete.gif");
 	public static final ThemeResource CHECK_ALL = new ThemeResource("images/check-all.jpg");
+	public static final ThemeResource DATAIMPORT_ICON = new ThemeResource("images/dataimport.png");
+	public static final ThemeResource DATAEXPORT_ICON = new ThemeResource("images/dataexport.png");
+	public static final ThemeResource DATAIMPORT_EXCEL_ICON = new ThemeResource("images/xls.png");
+	public static final ThemeResource DATAEXPORT_SQL_ICON = new ThemeResource("images/sql.png");
 	
 	//Help Content
 	public static final String HELP_CONTENT = "<h1>How to Create Test Data using DATA Gen™</h1>"
