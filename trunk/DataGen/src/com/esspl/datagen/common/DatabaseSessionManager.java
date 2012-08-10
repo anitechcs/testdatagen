@@ -33,9 +33,11 @@ import com.esspl.datagen.util.JdbcUtils;
  *@author Tapas
  * 
  */
+@SuppressWarnings("serial")
 public class DatabaseSessionManager implements Serializable {
 
 	private static final Logger log = Logger.getLogger(DatabaseSessionManager.class);
+	
     private ConnectionProfile connectionProfile;
     private BasicDataSource dataSource;
 

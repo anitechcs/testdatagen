@@ -38,22 +38,23 @@ import com.vaadin.data.Item;
 import com.vaadin.data.validator.IntegerValidator;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
-import com.vaadin.ui.CheckBox;
+import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.CustomComponent;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
-import com.vaadin.ui.Button.ClickEvent;
 
 /**
  *@author Tapas
  *
  */
+@SuppressWarnings("serial")
 public class TableDataView extends CustomComponent {
 
 	private static final Logger log = Logger.getLogger(ExplorerView.class);
+	
 	private DataGenApplication dataGenApplication;
     private VerticalLayout tableContainer;
     private HorizontalLayout content;
@@ -155,6 +156,7 @@ public class TableDataView extends CustomComponent {
         return sb.toString();
     }
     
+    @SuppressWarnings("rawtypes")
     protected void populateGenerator(JdbcTable table){
     	log.debug("TableDataView - populateGenerator() called");
     	if(rows.getValue() != null){
@@ -168,7 +170,8 @@ public class TableDataView extends CustomComponent {
     	if(columns.size() > generatorLength){
     		dataGenApplication.addRow(columns.size() - generatorLength);
     	}
-    	Iterator iter = dataGenApplication.listing.getItemIds().iterator();
+    	
+		Iterator iter = dataGenApplication.listing.getItemIds().iterator();
     	while(iter.hasNext()){
     		int row = (Integer)iter.next();
     		Item item = dataGenApplication.listing.getItem(row);

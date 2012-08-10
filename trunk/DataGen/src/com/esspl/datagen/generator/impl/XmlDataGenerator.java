@@ -63,7 +63,6 @@ public class XmlDataGenerator implements Generator{
         for(int row=0;row<maxRows;row++){
         	StringBuilder sbColumnNames = new StringBuilder();
         	sbColumnNames.append("\t<"+recordNodeName+">\n");
-        	StringBuilder sb = new StringBuilder();
         	for(GeneratorBean generatorBean : rowList){
         		String data = "";
         		String dataType = generatorBean.getDataType();

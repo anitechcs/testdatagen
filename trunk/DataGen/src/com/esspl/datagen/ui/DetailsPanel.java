@@ -35,11 +35,11 @@ import com.vaadin.ui.ListSelect;
 import com.vaadin.ui.Window;
 import com.vaadin.ui.Window.Notification;
 
-
 /**
  * @author Tapas
  * 
  */
+@SuppressWarnings("serial")
 public class DetailsPanel extends CustomComponent {
 
 	private static final Logger log = Logger.getLogger(DetailsPanel.class);

@@ -37,6 +37,7 @@ import com.esspl.datagen.ui.ResultSetTable;
 public class DataGenSqlExecutor {
 	
 	private static final Logger log = Logger.getLogger(DataGenSqlExecutor.class);
+	
 	private String splitter = ";";
 	private StringBuilder sbLogMsg = new StringBuilder();
 	private ExecutorView executorView;

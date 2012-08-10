@@ -566,8 +566,6 @@ public final class DataFactory {
 			return "I";
 		}
 
-		String value = null;
-
 		// start from random pos and find the first word of the right size
 		String[] words = contentDataValues.getWords();
 		int pos = random.nextInt(words.length);

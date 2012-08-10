@@ -27,11 +27,13 @@ import java.io.IOException;
 /**
  * @author Tapas
  *
- *This input stream deletes the given file when the InputStream is closed; intended to be used with temporary files.
+ * This input stream deletes the given file when the InputStream is closed; intended to be used with temporary files.
  */
 
 public class DeletingFileInputStream extends FileInputStream {
+	
 	protected File file = null;
+	
 	public DeletingFileInputStream(File file) throws FileNotFoundException {
 		super(file);
 		this.file = file;

@@ -50,9 +50,11 @@ import com.vaadin.ui.themes.Runo;
  * @author Tapas
  *
  */
+@SuppressWarnings("serial")
 public class ExecutorView extends CustomComponent {
 
 	private static final Logger log = Logger.getLogger(ExecutorView.class);
+	
 	private DataGenApplication dataGenApplication;
 	public Connection connection;
 	public VerticalSplitPanel splitPanel;

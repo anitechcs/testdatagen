@@ -48,6 +48,7 @@ import com.vaadin.ui.Window.Notification;
 /**
  *
  */
+@SuppressWarnings("serial")
 public class TableSelectorView extends VerticalLayout {
 
 	private static final Logger log = Logger.getLogger(TableSelectorView.class);

@@ -36,6 +36,8 @@ import com.vaadin.ui.Label;
  */
 public class TableStructureView extends CustomComponent {
 
+	private static final long serialVersionUID = 1L;
+	
 	private static final Logger log = Logger.getLogger(TableStructureView.class);
 	
     public TableStructureView(JdbcTable table, Connection connection) {
@@ -47,6 +49,7 @@ public class TableStructureView extends CustomComponent {
             setCompositionRoot(resultSetTable);
             JdbcUtils.close(attributes);
         } catch (Exception ex) {
+        	log.error("Exception Occoured at TableStructureView.");
             setCompositionRoot(new Label(ex.getMessage()));
         }
     }

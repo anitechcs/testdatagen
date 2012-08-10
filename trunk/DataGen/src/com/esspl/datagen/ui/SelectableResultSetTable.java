@@ -38,14 +38,15 @@ import com.vaadin.ui.Component;
 import com.vaadin.ui.CustomComponent;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.Table;
-import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Table.HeaderClickEvent;
 import com.vaadin.ui.Table.HeaderClickListener;
+import com.vaadin.ui.VerticalLayout;
 
 /**
  *@author Tapas
  *
  */
+@SuppressWarnings("serial")
 public class SelectableResultSetTable extends CustomComponent {
 
 	private static final Logger log = Logger.getLogger(SelectableResultSetTable.class);
@@ -117,10 +118,10 @@ public class SelectableResultSetTable extends CustomComponent {
         t.setColumnCollapsingAllowed(true);
         t.setSelectable(true);
         t.setColumnIcon(" ", DataGenConstant.CHECK_ALL);
-        //Handle the header checkbox selector click
         t.addListener(new HeaderClickListener() {
         	
-        	@Override
+        	@SuppressWarnings("rawtypes")
+			@Override
 	        public void headerClick(HeaderClickEvent event) {
 		        String column = (String) event.getPropertyId();
 		        if(column.equals(" ")){

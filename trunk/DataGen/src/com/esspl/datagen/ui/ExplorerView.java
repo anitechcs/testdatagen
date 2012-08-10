@@ -24,7 +24,6 @@ import org.apache.log4j.Logger;
 import com.esspl.datagen.DataGenApplication;
 import com.esspl.datagen.common.DatabaseSessionManager;
 import com.esspl.datagen.common.DetailsListener;
-import com.esspl.datagen.config.ConnectionProfile;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.CustomComponent;
 import com.vaadin.ui.HorizontalSplitPanel;
@@ -33,6 +32,7 @@ import com.vaadin.ui.HorizontalSplitPanel;
  * @author Tapas
  * 
  */
+@SuppressWarnings("serial")
 public class ExplorerView extends CustomComponent {
 	
 	private static final Logger log = Logger.getLogger(ExplorerView.class);
@@ -48,7 +48,7 @@ public class ExplorerView extends CustomComponent {
         sp.setSizeFull();
         sp.setLocked(true);
         
-        TableSelectorView tableSelectorView = new TableSelectorView(databaseSessionManager, dataApp);
+        TableSelectorView tableSelectorView = new TableSelectorView(databaseSessionManager, dataGenApplication);
         tableSelectorView.setDetailsListener(new DetailsListener() {
 
             @Override

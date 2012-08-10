@@ -73,9 +73,9 @@ import com.vaadin.ui.themes.Runo;
 public class DataGenApplication extends Application implements ValueChangeListener{
 
 	private static final Logger log = Logger.getLogger(DataGenApplication.class);
+	
     private ArrayList<GeneratorBean> rowList = new ArrayList<GeneratorBean>();
     private int tableLength = 1;//for internal use only
-
     public DatabaseSessionManager databaseSessionManager;
     public ResultView resultWindow;
     public Button rowsBttn;
@@ -407,7 +407,8 @@ public class DataGenApplication extends Application implements ValueChangeListen
      * This method is called when user click on Generate button.
      * 
      */
-    public void generateButtonClick (Button.ClickEvent event) {
+    @SuppressWarnings("rawtypes")
+	public void generateButtonClick (Button.ClickEvent event) {
     	log.debug("DataGenApplication - generateButtonClick() start");
     	if(resultNum.getValue() == null || StringUtils.isNullOrEmpty(resultNum.getValue().toString())){
     		getMainWindow().showNotification("Number of result field cannot be blank!", Notification.TYPE_ERROR_MESSAGE);

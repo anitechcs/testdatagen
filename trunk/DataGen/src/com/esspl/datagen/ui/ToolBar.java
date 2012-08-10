@@ -30,10 +30,10 @@ import com.esspl.datagen.util.DataGenConstant;
 import com.vaadin.data.util.BeanItemContainer;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
-import com.vaadin.ui.HorizontalLayout;
-import com.vaadin.ui.Select;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
+import com.vaadin.ui.HorizontalLayout;
+import com.vaadin.ui.Select;
 import com.vaadin.ui.Window.Notification;
 
 /**
@@ -42,9 +42,11 @@ import com.vaadin.ui.Window.Notification;
  * @author Tapas
  *
  */
+@SuppressWarnings("serial")
 public class ToolBar extends HorizontalLayout {
 	
 	private static final Logger log = Logger.getLogger(DataGenApplication.class);
+	
 	private Button connect;
 	private Button disConnect;
 	private Select profiles;
