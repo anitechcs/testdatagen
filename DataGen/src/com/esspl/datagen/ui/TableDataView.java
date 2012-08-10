@@ -29,6 +29,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 import org.apache.log4j.Logger;
+import org.vaadin.hene.popupbutton.PopupButton;
 
 import com.esspl.datagen.DataGenApplication;
 import com.esspl.datagen.common.JdbcTable;
@@ -39,6 +40,7 @@ import com.vaadin.data.validator.IntegerValidator;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
+import com.vaadin.ui.Button.ClickListener;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.CustomComponent;
 import com.vaadin.ui.HorizontalLayout;
@@ -61,13 +63,17 @@ public class TableDataView extends CustomComponent {
     private TextField rows;
     private ArrayList<String> columns = new ArrayList<String>();
 
-    public TableDataView(final JdbcTable table, final Connection connection, DataGenApplication dataApp) {
+    public TableDataView(final JdbcTable table, final Connection connection, final DataGenApplication dataApp) {
     	log.debug("TableDataView - constructor start");
         setCaption("Data");
         dataGenApplication = dataApp;
         VerticalLayout vl = new VerticalLayout();
         vl.setSizeFull();
         setCompositionRoot(vl);
+        
+        HorizontalLayout hBar = new HorizontalLayout();
+        hBar.setWidth("98%");
+        hBar.setHeight("40px");
 
         rows = new TextField();
         rows.setWidth("50px");
@@ -110,9 +116,45 @@ public class TableDataView extends CustomComponent {
         content.addComponent(refreshButton);
         content.setComponentAlignment(refreshButton, Alignment.MIDDLE_CENTER);
         
+        //Tapas:10/08/2012 - Export feature implementation started
+        HorizontalLayout expContainer = new HorizontalLayout();
+        expContainer.setSpacing(true);
+        
+        PopupButton exportButton = new PopupButton("Export");
+        exportButton.setComponent(new DataExportView());
+        exportButton.addListener(new ClickListener() {
+        	
+			@Override
+			public void buttonClick(ClickEvent event) {
+				//dataApp.getMainWindow().showNotification("Export Button clicked!");
+			}
+        });
+        exportButton.setIcon(DataGenConstant.DATAEXPORT_ICON);
+        expContainer.addComponent(exportButton);
+        expContainer.setComponentAlignment(exportButton, Alignment.MIDDLE_LEFT);
+        
+        //Tapas:10/08/2012 - Import feature implementation started
+        PopupButton importButton = new PopupButton("Import");
+        importButton.setComponent(new DataImportView());
+        importButton.addListener(new ClickListener() {
+        	
+        	@Override
+			public void buttonClick(ClickEvent event) {
+        		//dataApp.getMainWindow().showNotification("Import Button clicked!");
+			}
+		});
+        importButton.setIcon(DataGenConstant.DATAIMPORT_ICON);
+        expContainer.addComponent(importButton);
+        expContainer.setComponentAlignment(importButton, Alignment.MIDDLE_RIGHT);
+        
+        
         tableContainer = new VerticalLayout();
         tableContainer.setSizeFull();
-        vl.addComponent(content);
+        hBar.addComponent(content);
+        hBar.setComponentAlignment(content, Alignment.MIDDLE_LEFT);
+        hBar.addComponent(expContainer);
+        hBar.setComponentAlignment(expContainer, Alignment.MIDDLE_RIGHT);
+        vl.addComponent(hBar);
         vl.addComponent(tableContainer);
         vl.setExpandRatio(tableContainer, 1f);
 
