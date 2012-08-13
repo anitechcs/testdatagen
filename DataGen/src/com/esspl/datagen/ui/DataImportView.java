@@ -22,6 +22,7 @@ package com.esspl.datagen.ui;
 import org.apache.log4j.Logger;
 
 import com.esspl.datagen.util.DataGenConstant;
+import com.esspl.datagen.util.DataGenImportUtil;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.VerticalLayout;
@@ -54,13 +55,19 @@ public class DataImportView extends VerticalLayout {
 	}
 	
 	public void excelImportButtonClick(ClickEvent event) {
-		//Excel import handler logic here
 		this.getApplication().getMainWindow().showNotification("Excel Import Button Clicked");
+		
+		//Actual import logic handled through separate utility class
+		DataGenImportUtil imp = new DataGenImportUtil();
+		imp.doImport(event.getButton().getCaption());
 	}
 	
 	public void sqlImportButtonClick(ClickEvent event) {
-		//Sql import handler logic here
 		this.getApplication().getMainWindow().showNotification("Sql Import Button Clicked");
+		
+		//Actual import logic handled through separate utility class
+		DataGenImportUtil imp = new DataGenImportUtil();
+		imp.doImport(event.getButton().getCaption());
 	}
 	
 }

@@ -40,7 +40,7 @@ import com.esspl.datagen.generator.impl.CsvDataGenerator;
 import com.esspl.datagen.generator.impl.SqlDataGenerator;
 import com.esspl.datagen.generator.impl.XmlDataGenerator;
 import com.esspl.datagen.util.DataGenConstant;
-import com.esspl.datagen.util.DataGenExportUtility;
+import com.esspl.datagen.util.DataGenStreamUtil;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
@@ -130,26 +130,26 @@ public class ResultView extends Window {
             public void buttonClick(ClickEvent event) {
             	log.info("ResultView - Export to File Button clicked");
             	String dataOption = dataGenApplication.generateType.getValue().toString();
-            	DataGenExportUtility resource = null;
+            	DataGenStreamUtil resource = null;
 				try {
 					if(dataOption.equalsIgnoreCase("xml")){
 						File tempFile = File.createTempFile("tmp", ".xml");
 						BufferedWriter out = new BufferedWriter(new FileWriter(tempFile));
 						out.write(message.getValue().toString());
 						out.close();
-						resource = new DataGenExportUtility(dataGenApplication, "data.xml", "text/xml", tempFile);
+						resource = new DataGenStreamUtil(dataGenApplication, "data.xml", "text/xml", tempFile);
 			        }else if(dataOption.equalsIgnoreCase("csv")){
 			        	File tempFile = File.createTempFile("tmp", ".csv");
 						BufferedWriter out = new BufferedWriter(new FileWriter(tempFile));
 						out.write(message.getValue().toString());
 						out.close();
-						resource = new DataGenExportUtility(dataGenApplication, "data.csv", "text/csv", tempFile);
+						resource = new DataGenStreamUtil(dataGenApplication, "data.csv", "text/csv", tempFile);
 			        }else if(dataOption.equalsIgnoreCase("sql")){
 			        	File tempFile = File.createTempFile("tmp", ".sql");
 						BufferedWriter out = new BufferedWriter(new FileWriter(tempFile));
 						out.write(message.getValue().toString());
 						out.close();
-						resource = new DataGenExportUtility(dataGenApplication, "data.sql", "text/plain", tempFile);
+						resource = new DataGenStreamUtil(dataGenApplication, "data.sql", "text/plain", tempFile);
 			        }
 					getWindow().open(resource, "_self");
 				}catch(FileNotFoundException e) {
