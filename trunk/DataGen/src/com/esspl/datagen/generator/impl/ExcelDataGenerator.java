@@ -40,7 +40,7 @@ import com.esspl.datagen.DataGenApplication;
 import com.esspl.datagen.common.GeneratorBean;
 import com.esspl.datagen.data.DataFactory;
 import com.esspl.datagen.generator.Generator;
-import com.esspl.datagen.util.DataGenExportUtility;
+import com.esspl.datagen.util.DataGenStreamUtil;
 import com.vaadin.data.Item;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.PopupDateField;
@@ -177,7 +177,7 @@ public class ExcelDataGenerator implements Generator{
 			workbook.write();
 			workbook.close();
 			
-			DataGenExportUtility resource = new DataGenExportUtility(dataGenApplication, "data.xls", "application/vnd.ms-excel", tempFile);
+			DataGenStreamUtil resource = new DataGenStreamUtil(dataGenApplication, "data.xls", "application/vnd.ms-excel", tempFile);
 			dataGenApplication.getMainWindow().getWindow().open(resource, "_self");
 		}catch(WriteException e) {
 			e.printStackTrace();

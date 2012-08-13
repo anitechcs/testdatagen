@@ -22,6 +22,7 @@ package com.esspl.datagen.ui;
 import org.apache.log4j.Logger;
 
 import com.esspl.datagen.util.DataGenConstant;
+import com.esspl.datagen.util.DataGenExportUtil;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.VerticalLayout;
@@ -54,13 +55,19 @@ public class DataExportView extends VerticalLayout {
 	}
 	
 	public void excelExportButtonClick(ClickEvent event) {
-		//Excel export handler logic here
 		this.getApplication().getMainWindow().showNotification("Excel Export Button Clicked");
+		
+		//Actual export logic handled through separate utility class
+		DataGenExportUtil export = new DataGenExportUtil();
+		export.doExport(event.getButton().getCaption());
 	}
 	
 	public void sqlExportButtonClick(ClickEvent event) {
-		//Sql export handler logic here
 		this.getApplication().getMainWindow().showNotification("Sql Export Button Clicked");
+		
+		//Actual export logic handled through separate utility class
+		DataGenExportUtil export = new DataGenExportUtil();
+		export.doExport(event.getButton().getCaption());
 	}
 	
 }
