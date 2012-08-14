@@ -27,6 +27,7 @@ import org.apache.log4j.Logger;
 
 import com.esspl.datagen.ui.ExecutorView;
 import com.esspl.datagen.ui.ResultSetTable;
+import com.vaadin.ui.Window.Notification;
 
 /**
  * DBScript Executor Utility for DataGen
@@ -34,22 +35,30 @@ import com.esspl.datagen.ui.ResultSetTable;
  * @author Tapas
  *
  */
-public class DataGenSqlExecutor {
+public class DataGenSqlExecutor extends Thread {
 	
 	private static final Logger log = Logger.getLogger(DataGenSqlExecutor.class);
 	
 	private String splitter = ";";
 	private StringBuilder sbLogMsg = new StringBuilder();
 	private ExecutorView executorView;
-
+	private String sqlScript;
+	private String selectedDatabase;
+	private String statMsg = "";
+	
+	public DataGenSqlExecutor(ExecutorView execView, String script, String argDataBase) {
+		executorView = execView;
+		sqlScript = script;
+		selectedDatabase = argDataBase;
+	}
+	
 	/**
 	 * This method is responsible for executing sql statements.
 	 *
 	 */
-	public String executeScript(ExecutorView execView, String script, String argDataBase) {
-		log.debug("DataGenSqlExecutor - executeScript() method start");
-		executorView = execView;
-		String statMsg = "";
+	@Override
+	public void run() {
+		log.debug("DataGenSqlExecutor - run() method start");
 		int excutedScriptNumber = 0;
 		int totalScriptCount = 0;
 		int totalUpdatedCount = 0;
@@ -58,13 +67,19 @@ public class DataGenSqlExecutor {
 		Connection con = executorView.connection;
 		PreparedStatement stmt = null;
 		
-		//Initialize the splitter according to the database
-		if(argDataBase.equalsIgnoreCase("sql server")){
+		//Initialize the splitter according to the selected database
+		if(selectedDatabase.equalsIgnoreCase("sql server")){
 			splitter = "GO";
 		}
 		
+		executorView.refresher.setRefreshInterval(DataGenConstant.SLEEP_TIME_IN_MILLIS);
+		executorView.loadingImg.setVisible(true);
+		long start = System.currentTimeMillis();
 		try {
-			Scanner scanner =  new Scanner(script).useDelimiter(splitter);  
+			addLog("Connecting to the DataBase...");
+			addLog("<font color='green'>Successfully Connected.</font>");
+			addLog("Preparing to execute script...");
+			Scanner scanner =  new Scanner(sqlScript).useDelimiter(splitter);  
 	        while (scanner.hasNext()) {  
 	            String statement = scanner.next(); 
 	            if(!statement.trim().equals("")){
@@ -77,14 +92,15 @@ public class DataGenSqlExecutor {
 						addLog("<font color='green'>Execution completed sucessfully</font>");
 						excutedScriptNumber++;
 					}catch(Exception e){
-						addLog("<font color='red'>## Error occoured at : "+statement+". Make sure every sql statements must ends with '"+splitter+"'");
-						addLog("## Error : "+e.getMessage());
+						addLog("<font color='red'>## Error occoured at : "+statement+". <br>## NOTE : Make sure every sql statements must ends with '"+splitter+"'");
+						addLog("## Error Details : "+e.getMessage());
 						for(int i = 0; i < e.getStackTrace().length; i++){
 							addLog(e.getStackTrace()[i].toString());
 						}
 						addLog("</font>");
 						executorView.resultSheet.setSelectedTab(executorView.logText);
-						return "";
+						//If error occurred for one script don't stop. keep executing
+						continue;
 					}
 					if (!hasResultSet) {
 						int cnt = stmt.getUpdateCount();
@@ -104,14 +120,9 @@ public class DataGenSqlExecutor {
 	            }
 	            JdbcUtils.close(stmt);
 	        }  
-			addLog("<font color='green'>######################");
-			addLog("## Execution Summary ##");
-			addLog("######################</font>");
-			addLog("Total No. of Scripts- "+ totalScriptCount);
-			addLog("Successfully Executed Scripts- "+excutedScriptNumber);
 		}
 		catch(Exception e){
-			addLog("<font color='red'>## Oops! Error occoured during Script execution.");
+			addLog("<font color='red'>## Oops! The following Error occoured during ccript execution.");
 			addLog(e.getMessage());
 			for(int i = 0; i < e.getStackTrace().length; i++){
 				addLog(e.getStackTrace()[i].toString());
@@ -119,18 +130,44 @@ public class DataGenSqlExecutor {
 			addLog("</font>");
 			e.printStackTrace();
 		}
-		log.debug("DataGenSqlExecutor - execute() method end");
+		finally {
+			//Close the connection
+			JdbcUtils.close(executorView.connection);
+
+	        //Hide Loading Icon
+	        executorView.loadingImg.setVisible(false);
+	        
+	        //Log the statistics
+	        addLog("<br /><font color='green'>######################");
+			addLog("## Execution Summary ##");
+			addLog("######################</font>");
+			addLog("Total No. of Scripts- "+ totalScriptCount);
+			addLog("Successfully Executed Scripts- "+excutedScriptNumber);
+			
+	        //Show the Execution time
+	        long end = System.currentTimeMillis();
+	        executorView.getApplication().getMainWindow().showNotification("Query Stats<br/>", "exec time: " + (end - start) / 1000.0 + " ms<br/>" + statMsg, Notification.TYPE_TRAY_NOTIFICATION);
 		
-		return statMsg;
+	        //Disable the UI refresher
+	        executorView.refresher.setRefreshInterval(0);
+	        
+		}
+		log.debug("DataGenSqlExecutor - run() method end");
+		
 	}
 	
 	/**
-	 * Add a message to log.
+	 * Add a message to log and set the scrolltop of the panel.
 	 *
 	 */
 	public void addLog(String message){
 		sbLogMsg.append(message).append("<br>");
 		executorView.logText.setValue(sbLogMsg.toString());
+		
+		//Hack to automatically scroll to the bottom of the log panel
+		executorView.logPanel.setScrollTop(Short.MAX_VALUE);
+		executorView.logPanel.requestRepaint();
 	}
+
 }
 
