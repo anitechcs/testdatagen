@@ -32,16 +32,6 @@ public class DataGenDialect {
 	private String databaseName = "";
 	
 	/**
-	 * This is the default constructor.
-	 * This is made private so that no one can make a instance by directly calling this constructor.
-	 * Use parameterised constructor always. 
-	 */
-	@SuppressWarnings("unused")
-	private DataGenDialect(){
-		
-	}
-	
-	/**
 	 * This is the parameterised constructor for 
 	 * instantiating Dialect class by giving particular database name.
 	 * If value is blank It will take the selected database name in Generator tab to 

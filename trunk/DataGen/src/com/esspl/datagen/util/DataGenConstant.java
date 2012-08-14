@@ -29,6 +29,9 @@ import com.vaadin.terminal.ThemeResource;
  * 
  */
 public class DataGenConstant {
+	
+	//Used for Script runner Console
+	public static final int SLEEP_TIME_IN_MILLIS = 100; //1sec = 1000milisec
 
 	//Formats
 	public static final String[] NAME_FORMATS = {"First_Name Last_Name", "First_Name", "Last_Name", "Sur_Name Last_Name", "Sur_Name First_Name", "Sur_Name First_Name Last_Name"};
@@ -71,6 +74,7 @@ public class DataGenConstant {
 	public static final ThemeResource DATAEXPORT_ICON = new ThemeResource("images/dataexport.png");
 	public static final ThemeResource DATAIMPORT_EXCEL_ICON = new ThemeResource("images/xls.png");
 	public static final ThemeResource DATAEXPORT_SQL_ICON = new ThemeResource("images/sql.png");
+	public static final ThemeResource LOADING_ICON = new ThemeResource("images/loading.gif");
 	
 	//Help Content
 	public static final String HELP_CONTENT = "<h1>How to Create Test Data using DATA Gen™</h1>"

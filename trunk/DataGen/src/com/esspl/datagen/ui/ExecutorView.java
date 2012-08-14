@@ -27,7 +27,7 @@ import org.apache.log4j.Logger;
 import com.esspl.datagen.DataGenApplication;
 import com.esspl.datagen.util.DataGenConstant;
 import com.esspl.datagen.util.DataGenSqlExecutor;
-import com.esspl.datagen.util.JdbcUtils;
+import com.github.wolfie.refresher.Refresher;
 import com.vaadin.event.ShortcutAction;
 import com.vaadin.event.ShortcutListener;
 import com.vaadin.ui.Alignment;
@@ -36,8 +36,10 @@ import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
 import com.vaadin.ui.ComboBox;
 import com.vaadin.ui.CustomComponent;
+import com.vaadin.ui.Embedded;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
+import com.vaadin.ui.Panel;
 import com.vaadin.ui.TabSheet;
 import com.vaadin.ui.TabSheet.Tab;
 import com.vaadin.ui.TextArea;
@@ -63,6 +65,9 @@ public class ExecutorView extends CustomComponent {
     public Tab resultTab;
     public Label logText;
     public TextArea sqlScript;
+    public Refresher refresher;
+    public Panel logPanel;
+    public Embedded loadingImg;
 
     public ExecutorView(DataGenApplication application) {
     	log.debug("ExecutorView - constructor start");
@@ -92,7 +97,7 @@ public class ExecutorView extends CustomComponent {
             @Override
         	public void buttonClick(ClickEvent event) {
             	log.info("ExecutorView - Execute Button clicked");
-            	executeQuery(sqlScript.getValue().toString());
+            	executeScript(sqlScript.getValue().toString());
             }
         });
         executeButton.addStyleName("small");
@@ -135,7 +140,25 @@ public class ExecutorView extends CustomComponent {
 
         logText = new Label();
         logText.setContentMode(Label.CONTENT_XHTML);
-        resultSheet.addTab(logText, "Console");
+        logText.setSizeFull();
+        
+        //Panel to add refresher
+        logPanel = new Panel();
+        logPanel.setSizeFull();
+        logPanel.setScrollable(true);
+        logPanel.setStyleName(Runo.PANEL_LIGHT);
+        logPanel.addComponent(logText);
+        
+        //Refresher added to show instant log messages
+        refresher = new Refresher();
+        logPanel.addComponent(refresher);
+        
+        //Loading image
+        loadingImg = new Embedded("", DataGenConstant.LOADING_ICON);
+        loadingImg.setVisible(false);
+        logPanel.addComponent(loadingImg);
+        
+        resultSheet.addTab(logPanel, "Console");
         resultTab = resultSheet.addTab(new Label(), "Results");
         
         queryOptions.addComponent(executeButton);
@@ -159,7 +182,7 @@ public class ExecutorView extends CustomComponent {
 
             @Override
             public void handleAction(Object sender, Object target) {
-                executeQuery(sqlScript.getValue().toString());
+                executeScript(sqlScript.getValue().toString());
             }
         });
         log.debug("ExecutorView - constructor end");
@@ -170,8 +193,8 @@ public class ExecutorView extends CustomComponent {
      * 
      * @param query
      */
-    protected void executeQuery(String query) {
-    	log.debug("ExecutorView - executeQuery() start");
+    protected void executeScript(String query) {
+    	log.debug("ExecutorView - executeScript() start");
     	//If query area is blank show popup message to user
     	if(query.equals("")){
     		getWindow().showNotification("You must provide some SQL to Execute!", Notification.TYPE_ERROR_MESSAGE);
@@ -182,7 +205,6 @@ public class ExecutorView extends CustomComponent {
     		return;
     	}
     	
-        long start = System.currentTimeMillis();
         try {
             connection = dataGenApplication.databaseSessionManager.getConnection();
         } catch (Exception ex) {
@@ -197,13 +219,9 @@ public class ExecutorView extends CustomComponent {
         	return;
         }
         
-        DataGenSqlExecutor executor = new DataGenSqlExecutor();
-        String statisticsMsg = executor.executeScript(this, query, dataGenApplication.database.getValue().toString());
-        JdbcUtils.close(connection);
-
-        long end = System.currentTimeMillis();
-        getApplication().getMainWindow().showNotification("Query Stats<br/>", "exec time: " + (end - start) / 1000.0 + " ms<br/>" + statisticsMsg, Notification.TYPE_TRAY_NOTIFICATION);
-        log.debug("ExecutorView - executeQuery() end");
+        DataGenSqlExecutor executor = new DataGenSqlExecutor(this, query, dataGenApplication.database.getValue().toString());
+        executor.start();
+        log.debug("ExecutorView - executeScript() end");
     }
 
     /**
