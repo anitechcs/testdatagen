@@ -52,7 +52,7 @@ public class DataGenConstant {
 	public static final ThemeResource EXPLORER_ICON = new ThemeResource("images/explorer.png");
 	
 	//Logo
-	public static final ThemeResource LOGO = new ThemeResource("images/logo.jpg");
+	public static final ThemeResource LOGO = new ThemeResource("images/logo.png");
 	public static final ThemeResource RESET = new ThemeResource("images/reload.gif");
 	public static final ThemeResource ADD = new ThemeResource("images/add.png");
 	public static final ThemeResource VIEW = new ThemeResource("images/view.gif");

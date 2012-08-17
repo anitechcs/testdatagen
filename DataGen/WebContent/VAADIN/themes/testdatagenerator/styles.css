@@ -1,7 +1,16 @@
+/************************************
+******* DATAGen Main Style **********
+************************************/
+
+@import url(../runo/styles.css);
 @import url(../runo/styles.css);
 
 .tData .top {
-	background: url(images/headerbg.jpg) repeat-x;
+	background: url(images/headerbg.jpeg) repeat-x;
+}
+
+.tData .logo {
+	padding: 5px 0px 0px 10px;
 }
 
 .tData .tabSheet{

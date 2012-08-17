@@ -142,6 +142,7 @@ public class DataGenApplication extends Application implements ValueChangeListen
         Embedded logo = new Embedded();
         logo.setSource(DataGenConstant.LOGO);
         logo.setWidth("100%");
+        logo.setStyleName("logo");
         header.addComponent(logo);
         header.setSpacing(false);
         
