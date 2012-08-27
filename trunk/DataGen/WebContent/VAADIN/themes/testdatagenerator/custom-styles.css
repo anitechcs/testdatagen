@@ -2,4 +2,9 @@
 ******* DATAGen Custom Style ********
 ************************************/
 
-
+/*Custom changes for button mouse hover effect*/
+.v-button-wrap:hover {
+   background: #AAD9F4;
+   background: url(images/bttnbg.jpg) repeat-x;
+   color: white;
+}

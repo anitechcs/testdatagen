@@ -3,7 +3,7 @@
 ************************************/
 
 @import url(../runo/styles.css);
-@import url(../runo/styles.css);
+@import url(custom-styles.css);
 
 .tData .top {
 	background: url(images/headerbg.jpeg) repeat-x;
@@ -53,7 +53,7 @@
 	border: 1px solid lightgray;
 }
 
-.tData .connectedString{
+.tData .connectedString {
 	position:absolute;
 	top: 40px;
 	right:30px;
@@ -61,4 +61,9 @@
 	color: highlight;
 	font-weight: bolder;
 	font-size: 16px;
+}
+
+.tData .toolbar {
+	background: url(images/toolbarbg.jpg) repeat-x;
+	padding: 4px 8px 5px 10px;
 }

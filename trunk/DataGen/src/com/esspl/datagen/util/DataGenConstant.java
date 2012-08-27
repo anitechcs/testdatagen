@@ -63,7 +63,7 @@ public class DataGenConstant {
 	public static final ThemeResource SETTING_ICON = new ThemeResource("images/setting.png");
 	public static final ThemeResource ACCEPT_ICON = new ThemeResource("images/accept.png");
 	public static final ThemeResource HELP_SCREEN = new ThemeResource("images/DG.png");
-	public static final ThemeResource DB_SETTING_ICON = new ThemeResource("images/dbsettings.jpg");
+	public static final ThemeResource DB_SETTING_ICON = new ThemeResource("images/dbsettings.png");
 	public static final ThemeResource DB_CONNECT_ICON = new ThemeResource("images/connect.png");
 	public static final ThemeResource DB_DISCONNECT_ICON = new ThemeResource("images/disconnect.png");
 	public static final ThemeResource ADD_SMALL = new ThemeResource("images/add_small.gif");

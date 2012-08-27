@@ -60,6 +60,8 @@ public class ToolBar extends HorizontalLayout {
         profiles.setNullSelectionAllowed(false);
 		addComponent(profiles);
         setComponentAlignment(profiles, Alignment.MIDDLE_RIGHT);
+        setStyleName("toolbar");
+        setSpacing(true);
         
         //Connect button
         connect = new Button("Connect", new ClickListener() {
