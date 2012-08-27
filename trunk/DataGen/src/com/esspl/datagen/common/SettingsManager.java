@@ -42,7 +42,7 @@ public class SettingsManager {
 
 	private static final Logger log = Logger.getLogger(SettingsManager.class);
 	
-    private static final String FILE_PATH = "DataGen" + File.separator + "config";
+    private static final String FILE_PATH = ".datagen" + File.separator + "config";
     private static final File SETTINGS_DIR = new File(System.getProperty("user.home") + File.separator + FILE_PATH);
     private static final File SETTINGS_FILE = new File(SETTINGS_DIR, "datagen-settings.xml");
 
