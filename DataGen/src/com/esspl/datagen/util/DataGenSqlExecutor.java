@@ -99,6 +99,12 @@ public class DataGenSqlExecutor extends Thread {
 						}
 						addLog("</font>");
 						executorView.resultSheet.setSelectedTab(executorView.logText);
+						
+						//If Console tab is not selected, then select it
+						if(executorView.resultSheet.getSelectedTab() != executorView.logPanel){
+							executorView.resultSheet.setSelectedTab(executorView.logPanel);
+						}
+						
 						//If error occurred for one script don't stop. keep executing
 						continue;
 					}
@@ -112,10 +118,9 @@ public class DataGenSqlExecutor extends Thread {
 	                executorView.resultSheet.removeTab(executorView.resultTab);
 	                executorView.resultTab = executorView.resultSheet.addTab(table, "Results");
 	                executorView.resultSheet.setSelectedTab(table);
-	                executorView.logText.setValue("");
 	                statMsg = "rows fetched: " + table.getItemIds().size();
 	            } else {
-	                executorView.resultSheet.setSelectedTab(executorView.logText);
+	                executorView.resultSheet.setSelectedTab(executorView.logPanel);
 	                statMsg = "rows updated: " + totalUpdatedCount;
 	            }
 	            JdbcUtils.close(stmt);
@@ -149,7 +154,11 @@ public class DataGenSqlExecutor extends Thread {
 	        executorView.getApplication().getMainWindow().showNotification("Query Stats<br/>", "exec time: " + (end - start) / 1000.0 + " ms<br/>" + statMsg, Notification.TYPE_TRAY_NOTIFICATION);
 		
 	        //Disable the UI refresher
-	        executorView.refresher.setRefreshInterval(0);
+	        //executorView.refresher.setRefreshInterval(0);
+	        
+	        //2nd Hack to automatically scroll to the bottom of the log panel
+			executorView.logPanel.setScrollTop(Short.MAX_VALUE);
+			executorView.logPanel.requestRepaint();
 	        
 		}
 		log.debug("DataGenSqlExecutor - run() method end");
@@ -165,9 +174,9 @@ public class DataGenSqlExecutor extends Thread {
 		executorView.logText.setValue(sbLogMsg.toString());
 		
 		//Hack to automatically scroll to the bottom of the log panel
-		executorView.logPanel.setScrollTop(Short.MAX_VALUE);
+		executorView.logPanel.setScrollTop(9999);
 		executorView.logPanel.requestRepaint();
 	}
-
+	
 }
 
