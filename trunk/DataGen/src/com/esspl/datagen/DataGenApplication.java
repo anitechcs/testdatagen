@@ -108,7 +108,7 @@ public class DataGenApplication extends Application implements ValueChangeListen
     	databaseSessionManager = new DatabaseSessionManager();
         //We'll build the whole UI inside the method buildMainLayout
         buildMainLayout();
-        setTheme("testdatagenerator");
+        setTheme("datagen");
         log.debug("DataGenApplication init() end");
     }
 
@@ -419,9 +419,9 @@ public class DataGenApplication extends Application implements ValueChangeListen
     		getMainWindow().showNotification("Number of results must be an Integer!", Notification.TYPE_ERROR_MESSAGE);
     		log.info("DataGenApplication - No. Of results is Text");
     		return;
-    	}else if(Integer.parseInt(resultNum.getValue().toString()) > 10000){
-    		getMainWindow().showNotification("Number of results cannot be more than 10000!", Notification.TYPE_ERROR_MESSAGE);
-    		log.info("DataGenApplication - No. Of results is greater than 10000");
+    	}else if(Integer.parseInt(resultNum.getValue().toString()) > 5000){
+    		getMainWindow().showNotification("Number of results cannot be more than 5000!", Notification.TYPE_ERROR_MESSAGE);
+    		log.info("DataGenApplication - No. Of results is greater than 5000");
     		return;
     	}
     	String dataOption = generateType.getValue().toString();

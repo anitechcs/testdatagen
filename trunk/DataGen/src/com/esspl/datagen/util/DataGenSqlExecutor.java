@@ -50,6 +50,9 @@ public class DataGenSqlExecutor extends Thread {
 		executorView = execView;
 		sqlScript = script;
 		selectedDatabase = argDataBase;
+		
+		// enable the Log panel refresher
+		executorView.refresher.setRefreshInterval(DataGenConstant.SLEEP_TIME_IN_MILLIS);
 	}
 	
 	/**
@@ -67,12 +70,11 @@ public class DataGenSqlExecutor extends Thread {
 		Connection con = executorView.connection;
 		PreparedStatement stmt = null;
 		
-		//Initialize the splitter according to the selected database
+		// initialise the splitter according to the selected database
 		if(selectedDatabase.equalsIgnoreCase("sql server")){
 			splitter = "GO";
 		}
 		
-		executorView.refresher.setRefreshInterval(DataGenConstant.SLEEP_TIME_IN_MILLIS);
 		executorView.loadingImg.setVisible(true);
 		long start = System.currentTimeMillis();
 		try {
@@ -98,14 +100,9 @@ public class DataGenSqlExecutor extends Thread {
 							addLog(e.getStackTrace()[i].toString());
 						}
 						addLog("</font>");
-						executorView.resultSheet.setSelectedTab(executorView.logText);
+						executorView.resultSheet.setSelectedTab(executorView.logPanel);
 						
-						//If Console tab is not selected, then select it
-						if(executorView.resultSheet.getSelectedTab() != executorView.logPanel){
-							executorView.resultSheet.setSelectedTab(executorView.logPanel);
-						}
-						
-						//If error occurred for one script don't stop. keep executing
+						// if error occurred for one script don't stop. keep executing
 						continue;
 					}
 					if (!hasResultSet) {
@@ -117,7 +114,7 @@ public class DataGenSqlExecutor extends Thread {
 	            	ResultSetTable table = new ResultSetTable(stmt.getResultSet());
 	                executorView.resultSheet.removeTab(executorView.resultTab);
 	                executorView.resultTab = executorView.resultSheet.addTab(table, "Results");
-	                executorView.resultSheet.setSelectedTab(table);
+	                executorView.resultSheet.setSelectedTab(executorView.resultTab);
 	                statMsg = "rows fetched: " + table.getItemIds().size();
 	            } else {
 	                executorView.resultSheet.setSelectedTab(executorView.logPanel);
@@ -136,29 +133,25 @@ public class DataGenSqlExecutor extends Thread {
 			e.printStackTrace();
 		}
 		finally {
-			//Close the connection
+			// close the connection
 			JdbcUtils.close(executorView.connection);
 
-	        //Hide Loading Icon
+	        // hide Loading Icon
 	        executorView.loadingImg.setVisible(false);
 	        
-	        //Log the statistics
+	        // log the statistics
 	        addLog("<br /><font color='green'>######################");
 			addLog("## Execution Summary ##");
 			addLog("######################</font>");
 			addLog("Total No. of Scripts- "+ totalScriptCount);
 			addLog("Successfully Executed Scripts- "+excutedScriptNumber);
 			
-	        //Show the Execution time
+	        // show the Execution time
 	        long end = System.currentTimeMillis();
 	        executorView.getApplication().getMainWindow().showNotification("Query Stats<br/>", "exec time: " + (end - start) / 1000.0 + " ms<br/>" + statMsg, Notification.TYPE_TRAY_NOTIFICATION);
 		
-	        //Disable the UI refresher
-	        //executorView.refresher.setRefreshInterval(0);
-	        
-	        //2nd Hack to automatically scroll to the bottom of the log panel
-			executorView.logPanel.setScrollTop(Short.MAX_VALUE);
-			executorView.logPanel.requestRepaint();
+	        // disable the UI refresher
+	        executorView.refresher.setRefreshInterval(0);
 	        
 		}
 		log.debug("DataGenSqlExecutor - run() method end");
@@ -173,9 +166,8 @@ public class DataGenSqlExecutor extends Thread {
 		sbLogMsg.append(message).append("<br>");
 		executorView.logText.setValue(sbLogMsg.toString());
 		
-		//Hack to automatically scroll to the bottom of the log panel
-		executorView.logPanel.setScrollTop(9999);
-		executorView.logPanel.requestRepaint();
+		// hack to automatically scroll to the bottom of the log panel
+		executorView.getApplication().getMainWindow().scrollIntoView(executorView.logText);
 	}
 	
 }
