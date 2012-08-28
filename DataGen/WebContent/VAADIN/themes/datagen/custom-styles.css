@@ -1,0 +1,22 @@
+/************************************
+******* DATAGen Custom Style ********
+************************************/
+
+/*Custom changes for button mouse hover effect*/
+.v-button-wrap:hover {
+   background: #AAD9F4;
+   background: url(images/bttnbg.jpg) repeat-x;
+   color: white;
+}
+
+/*Custom changes for loading indicator effect*/
+.v-loading-indicator, .v-loading-indicator-delay, .v-loading-indicator-wait {
+    width: 56px;
+    height: 47px;
+    position: fixed; !important;
+    left: 50% !important;
+    top: 15px !important;
+    /*background: transparent url(images/loading.gif);*/
+    background-repeat: no-repeat;
+    z-index: 10000;
+}
