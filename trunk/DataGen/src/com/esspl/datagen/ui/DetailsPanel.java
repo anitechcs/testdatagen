@@ -20,6 +20,7 @@
 package com.esspl.datagen.ui;
 
 import org.apache.log4j.Logger;
+import org.vaadin.jonatan.contexthelp.ContextHelp;
 
 import com.esspl.datagen.DataGenApplication;
 import com.esspl.datagen.common.SettingFieldFactory;
@@ -43,19 +44,28 @@ import com.vaadin.ui.Window.Notification;
 public class DetailsPanel extends CustomComponent {
 
 	private static final Logger log = Logger.getLogger(DetailsPanel.class);
-    private final SettingForm form;
+    public final SettingForm form;
     private ListSelect profileListSelect;
     private DataGenApplication dataGenApplication;
 
-    public DetailsPanel(ConnectionProfile profile, ListSelect list, DataGenApplication application) {
+    public DetailsPanel(ConnectionProfile profile, ListSelect list, DataGenApplication application, ContextHelp contextHelp) {
     	log.debug("DetailsPanel constructor start");
         profileListSelect = list;
         form = new SettingForm(profile);
+      
+        //Add help text here for each field
+        contextHelp.setFollowFocus(true);
+        contextHelp.addHelpForComponent(form.getField("name"), "Name help text goes here...");
+        contextHelp.addHelpForComponent(form.getField("driver"), "Driver help text goes here...");
+        contextHelp.addHelpForComponent(form.getField("url"), "Url help text goes here...");
+        contextHelp.addHelpForComponent(form.getField("user"), "User help text goes here...");
+        contextHelp.addHelpForComponent(form.getField("password"), "Password help text goes here...");
+        
         setCompositionRoot(form);
         dataGenApplication = application;
     }
 
-    private class SettingForm extends Form {
+    public class SettingForm extends Form {
 
         private SettingForm(ConnectionProfile profile) {
         	log.debug("SettingForm constructor start");
@@ -67,7 +77,7 @@ public class DetailsPanel extends CustomComponent {
             setFormFieldFactory(new SettingFieldFactory());
             setItemDataSource(new BeanItem<ConnectionProfile>(profile));
             setVisibleItemProperties(new String[]{"name", "driver", "url", "user", "password"});
-
+            
             HorizontalLayout footer = new HorizontalLayout();
             footer.setSpacing(true);
             footer.addComponent(new Button("Apply", new Button.ClickListener() {
@@ -100,7 +110,7 @@ public class DetailsPanel extends CustomComponent {
                 }
             }));
             
-            footer.addComponent(new Button("Test", new Button.ClickListener() {
+            footer.addComponent(new Button("Test Connection", new Button.ClickListener() {
             	
                 @Override
                 public void buttonClick(Button.ClickEvent event) {
