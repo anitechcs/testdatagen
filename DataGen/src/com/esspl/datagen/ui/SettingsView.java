@@ -22,6 +22,7 @@ package com.esspl.datagen.ui;
 import java.util.List;
 
 import org.apache.log4j.Logger;
+import org.vaadin.jonatan.contexthelp.ContextHelp;
 
 import com.esspl.datagen.DataGenApplication;
 import com.esspl.datagen.common.SettingsManager;
@@ -51,6 +52,7 @@ public class SettingsView extends Window {
     private Panel panel;
     private DetailsPanel details;
     private DataGenApplication dataGenApplication;
+    public ContextHelp contextHelp;
 
     public SettingsView(DataGenApplication application) {
         setModal(true);
@@ -67,6 +69,10 @@ public class SettingsView extends Window {
         layout.addComponent(bottom, 0, 1);
         layout.setComponentAlignment(bottom, Alignment.MIDDLE_RIGHT);
         layout.setRowExpandRatio(0, 1);
+        
+        //Context Help added
+        contextHelp = new ContextHelp();
+        layout.addComponent(contextHelp);
 
         refreshDetails();
     }
@@ -87,7 +93,7 @@ public class SettingsView extends Window {
 
     private DetailsPanel createDetails(ConnectionProfile profile) {
     	log.debug("SettingsView->createDetails()-----Creating Detail Section.");
-        DetailsPanel detailsPanel = new DetailsPanel(profile, list, dataGenApplication);
+        DetailsPanel detailsPanel = new DetailsPanel(profile, list, dataGenApplication, contextHelp);
         return detailsPanel;
     }
 
